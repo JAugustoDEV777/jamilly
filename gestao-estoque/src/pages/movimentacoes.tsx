@@ -261,14 +261,7 @@ export const Movimentacoes: React.FC = () => {
     );
   };
 
-  // Seleciona ou limpa todas as movimentações visíveis (filtradas)
-  const alternarSelecionarTodos = () => {
-    if (idsSelecionados.length === movimentacoesFiltradas.length) {
-      definirIdsSelecionados([]);
-    } else {
-      definirIdsSelecionados(movimentacoesFiltradas.map((mov) => mov.id));
-    }
-  };
+
 
   const confirmarExclusaoSelecionados = async () => {
     definirExcluindo(true);
