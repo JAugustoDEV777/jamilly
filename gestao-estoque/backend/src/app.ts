@@ -226,49 +226,37 @@ app.post('/api/auth/register', async (req: Request, res: Response) => {
 app.put('/api/auth/profile', async (req: Request, res: Response) => {
   const { id, nome, email, cargo, foto } = req.body
 
-  if (!id) {
-    res.status(400).json({ error: 'ID do usuário é obrigatório' })
+  const userId = Number(id)
+  if (!userId || Number.isNaN(userId)) {
+    res.status(400).json({ error: 'ID do usuário é obrigatório e deve ser numérico' })
     return
   }
 
+  // Normaliza entradas (evita enviar undefined para o prisma)
+  const dadosParaAtualizar: any = {}
+  if (typeof nome === 'string') dadosParaAtualizar.nome = nome.trim()
+  if (typeof email === 'string') dadosParaAtualizar.email = email.trim()
+  if (typeof cargo === 'string') dadosParaAtualizar.cargo = cargo
+  if (typeof foto === 'string' || foto === null) dadosParaAtualizar.foto = foto
+
   try {
-    const usuarioExistenteComMesmoNome = await prisma.usuario.findFirst({
-      where: {
-        nome,
-        NOT: { id },
-      },
-    })
-
-    if (usuarioExistenteComMesmoNome) {
-      res.status(400).json({ error: 'Nome de usuário já está em uso' })
-      return
-    }
-
-    const usuarioExistenteComMesmoEmail = await prisma.usuario.findFirst({
-      where: {
-        email,
-        NOT: { id },
-      },
-    })
-
-    if (usuarioExistenteComMesmoEmail) {
-      res.status(400).json({ error: 'E-mail já está em uso' })
-      return
-    }
-
     const usuario = await prisma.usuario.update({
-      where: { id },
-      data: {
-        nome,
-        email,
-        cargo,
-        foto,
-      },
+      where: { id: userId },
+      data: dadosParaAtualizar,
     })
 
     const { senha: _, ...userData } = usuario
     res.json({ user: userData })
-  } catch (error) {
+  } catch (error: any) {
+    // Tratamento específico para erro de constraint único do Prisma
+    if (error && error.code === 'P2002') {
+      // P2002 usually contains meta with target fields
+      const target = error.meta?.target
+      const campo = Array.isArray(target) ? target.join(', ') : target
+      res.status(400).json({ error: `${campo || 'Campo'} já está em uso` })
+      return
+    }
+
     console.error('Erro ao atualizar perfil:', error)
     res.status(500).json({ error: 'Erro interno no servidor' })
   }

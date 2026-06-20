@@ -52,21 +52,21 @@ export const Login: React.FC = () => {
               <span className="material-symbols-outlined text-xl sm:text-2xl">inventory_2</span>
             </div>
             <div>
-              <h1 className="text-[#3525cd] text-xl sm:text-2xl font-black tracking-tight leading-none uppercase dark:text-[#6f5ffd]">Depósito</h1>
-              <p className="text-xs text-on-surface-variant font-medium mt-0.5 dark:text-[#b3b0c3]">Gestão de Inventário Inteligente</p>
+              <h1 className="text-[#3525cd] text-xl sm:text-2xl font-black tracking-tight leading-none uppercase dark:text-[var(--color-primary)]">Depósito</h1>
+              <p className="text-xs text-on-surface-variant font-medium mt-0.5 dark:text-[var(--color-on-surface-variant)]">Gestão de Inventário Inteligente</p>
             </div>
           </div>
 
           {/* Cabeçalho do Login */}
           <div className="mb-6 sm:mb-8">
-            <h2 className="text-2xl sm:text-3xl font-extrabold mb-2 text-on-surface dark:text-[#e8e5f0]">Bem-vindo de volta</h2>
-            <p className="text-sm text-on-surface-variant dark:text-[#b3b0c3]">Insira suas credenciais para acessar o painel de controle.</p>
+            <h2 className="text-2xl sm:text-3xl font-extrabold mb-2 text-on-surface dark:text-[var(--color-on-surface)]">Bem-vindo de volta</h2>
+            <p className="text-sm text-on-surface-variant dark:text-[var(--color-on-surface-variant)]">Insira suas credenciais para acessar o painel de controle.</p>
           </div>
 
           {/* Formulário */}
           <form onSubmit={handleLogin} className="space-y-4 sm:space-y-5">
             {erro && (
-              <div className="bg-[#ffdad6] dark:bg-[#ba1a1a] text-[#ba1a1a] dark:text-[#ffb4a0] p-3 sm:p-4 rounded-xl text-sm font-medium flex items-center gap-2">
+              <div className="bg-[#ffdad6] dark:bg-[var(--color-error)] text-[var(--color-error)] dark:text-[var(--color-on-error-container)] p-3 sm:p-4 rounded-xl text-sm font-medium flex items-center gap-2">
                 <span className="material-symbols-outlined text-[18px] flex-shrink-0">error</span>
                 <span>{erro}</span>
               </div>
@@ -74,9 +74,9 @@ export const Login: React.FC = () => {
 
             {/* Campo Nome de usuário */}
             <div>
-              <label className="block text-xs font-bold text-on-surface-variant mb-1.5 ml-1 dark:text-[#b3b0c3]">Nome de usuário</label>
+              <label className="block text-xs font-bold text-on-surface-variant mb-1.5 ml-1 dark:text-[var(--color-on-surface-variant)]">Nome de usuário</label>
               <div className="relative flex items-center">
-                <span className="material-symbols-outlined absolute left-3 text-on-surface-variant text-[18px] dark:text-[#b3b0c3] pointer-events-none">person</span>
+                <span className="material-symbols-outlined absolute left-3 text-on-surface-variant text-[18px] dark:text-[var(--color-on-surface-variant)] pointer-events-none">person</span>
                 <input
                   type="text"
                   value={nomeUsuario}

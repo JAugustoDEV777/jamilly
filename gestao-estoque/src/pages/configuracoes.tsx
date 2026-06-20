@@ -426,11 +426,11 @@ export const Configuracoes: React.FC = () => {
                 </div>
               ) : categorias.length > 0 ? (
                 categorias.map((cat) => (
-                  <div key={cat.id} className="flex justify-between items-center bg-white border border-[#dcd8e5] py-3 px-4 rounded-xl hover:border-[#3525cd] hover:shadow-sm transition-all group dark:bg-[#222233] dark:border-[#333345]">
-                    <span className="text-sm font-medium text-on-surface dark:text-[#e8e5f0]">{cat.nome}</span>
+                  <div key={cat.id} className="flex justify-between items-center bg-white border border-[#dcd8e5] py-3 px-4 rounded-xl hover:border-[#3525cd] hover:shadow-sm transition-all group dark:bg-[var(--color-surface-container)] dark:border-[var(--color-outline-variant)]">
+                    <span className="text-sm font-medium text-on-surface dark:text-[var(--color-on-surface)]">{cat.nome}</span>
                     <button
                       onClick={() => removerCategoria(cat.id)}
-                      className="text-on-surface-variant hover:text-[#ba1a1a] opacity-0 group-hover:opacity-100 transition-all flex items-center justify-center dark:text-[#b3b0c3]"
+                      className="text-on-surface-variant hover:text-[var(--color-error)] opacity-0 group-hover:opacity-100 transition-all flex items-center justify-center dark:text-[var(--color-on-surface-variant)]"
                     >
                       <span className="material-symbols-outlined text-[20px]">delete</span>
                     </button>
@@ -438,14 +438,14 @@ export const Configuracoes: React.FC = () => {
                 ))
               ) : (
                 <div className="text-center py-6 text-on-surface-variant">
-                  <span className="material-symbols-outlined text-4xl mb-2 dark:text-[#49464f]">category</span>
-                  <p className="text-sm dark:text-[#b3b0c3]">Nenhuma categoria adicionada</p>
+                  <span className="material-symbols-outlined text-4xl mb-2 dark:text-[var(--color-outline-variant)]">category</span>
+                  <p className="text-sm dark:text-[var(--color-on-surface-variant)]">Nenhuma categoria adicionada</p>
                 </div>
               )}
             </div>
 
             <div>
-              <label className="block text-xs font-bold text-on-surface-variant mb-2 ml-1 uppercase tracking-wide dark:text-[#b3b0c3]">Adicionar Categoria</label>
+              <label className="block text-xs font-bold text-on-surface-variant mb-2 ml-1 uppercase tracking-wide dark:text-[var(--color-on-surface-variant)]">Adicionar Categoria</label>
               <div className="flex gap-2">
                 <input
                   type="text"
@@ -453,15 +453,15 @@ export const Configuracoes: React.FC = () => {
                   onChange={(e) => setNovaCategoria(e.target.value)}
                   placeholder="Digite o nome da categoria"
                   onKeyDown={(e) => e.key === 'Enter' && adicionarCategoria()}
-                  className="flex-1 bg-white border border-[#dcd8e5] text-sm rounded-xl py-3 px-4 outline-none focus:border-[#3525cd] focus:ring-2 focus:ring-[#3525cd]/30 transition-all hover:border-[#3525cd] dark:bg-[#222233] dark:border-[#333345] dark:text-[#e8e5f0]"
+                  className="flex-1 bg-white border border-[#dcd8e5] text-sm rounded-xl py-3 px-4 outline-none focus:border-[#3525cd] focus:ring-2 focus:ring-[#3525cd]/30 transition-all hover:border-[#3525cd] dark:bg-[var(--color-surface-container)] dark:border-[var(--color-outline-variant)] dark:text-[var(--color-on-surface)]"
                 />
                 <button
                   onClick={adicionarCategoria}
                   disabled={carregandoCategorias || !novaCategoria.trim()}
                   className={`p-3 rounded-xl flex items-center justify-center transition-all shadow-md active:scale-95 ${
                     carregandoCategorias || !novaCategoria.trim()
-                      ? 'bg-[#dcd8e5] text-[#999] cursor-not-allowed'
-                      : 'bg-gradient-to-br from-[#3525cd] to-[#4d44e3] hover:shadow-lg text-white'
+                      ? 'bg-[#dcd8e5] text-[#999] cursor-not-allowed dark:bg-[var(--color-surface-container-highest)] dark:text-[var(--color-on-surface)]'
+                      : 'bg-gradient-to-br from-[var(--color-primary)] to-[#4d44e3] hover:shadow-lg text-white dark:from-[var(--color-primary)] dark:to-[var(--color-primary-container)]'
                   }`}
                   title="Adicionar categoria"
                 >
@@ -479,7 +479,7 @@ export const Configuracoes: React.FC = () => {
       </div>
 
       {/* ── BARRA DE AÇÕES INFERIOR ── */}
-      <div className="fixed bottom-0 left-0 right-0 bg-white border-t border-[#dcd8e5] shadow-lg md:static md:shadow-none md:border-t md:bg-transparent md:border-[#dcd8e5] dark:bg-[#161620] dark:border-[#333345]">
+      <div className="fixed bottom-0 left-0 right-0 bg-white border-t border-[#dcd8e5] shadow-lg md:static md:shadow-none md:border-t md:bg-transparent md:border-[#dcd8e5] dark:bg-[var(--color-surface-container-lowest)] dark:border-[var(--color-outline-variant)]">
         <div className="w-full max-w-[1400px] mx-auto p-4 sm:p-6 md:p-0">
           {sucessoSalvar ? (
             <div className="mb-4 rounded-xl bg-[#f0f8f4] border border-[#a8d5ba] text-[#006c49] px-5 py-4 text-sm font-medium flex items-center gap-2 animate-in fade-in duration-300">
@@ -497,7 +497,7 @@ export const Configuracoes: React.FC = () => {
             <button
               type="button"
               onClick={handleDescartar}
-              className="w-full sm:w-auto px-6 py-3 rounded-xl font-bold text-sm text-on-surface-variant hover:bg-[#f5f2ff] hover:text-[#3525cd] border border-[#dcd8e5] transition-all active:scale-95 dark:border-[#333345] dark:text-[#b3b0c3] dark:hover:bg-[#28283a] dark:hover:text-[#6f5ffd]"
+              className="w-full sm:w-auto px-6 py-3 rounded-xl font-bold text-sm text-on-surface-variant hover:bg-[#f5f2ff] hover:text-[#3525cd] border border-[#dcd8e5] transition-all active:scale-95 dark:border-[var(--color-outline-variant)] dark:text-[var(--color-on-surface-variant)] dark:hover:bg-[var(--color-surface-container-high)] dark:hover:text-[var(--color-primary)]"
             >
               Descartar Alterações
             </button>
@@ -507,8 +507,8 @@ export const Configuracoes: React.FC = () => {
               disabled={salvando}
               className={`w-full sm:w-auto px-8 py-3 rounded-xl font-bold text-sm transition-all shadow-md hover:shadow-lg active:scale-95 flex items-center justify-center gap-2 ${
                 salvando
-                  ? 'bg-[#dcd8e5] text-[#777587] cursor-not-allowed dark:bg-[#333345] dark:text-[#666]'
-                  : 'bg-gradient-to-br from-[#3525cd] to-[#4d44e3] text-white hover:shadow-lg dark:from-[#6f5ffd] dark:to-[#5844d6]'
+                  ? 'bg-[#dcd8e5] text-[#777587] cursor-not-allowed dark:bg-[var(--color-surface-container-highest)] dark:text-[var(--color-on-surface-variant)]'
+                  : 'bg-gradient-to-br from-[var(--color-primary)] to-[#4d44e3] text-white hover:shadow-lg dark:from-[var(--color-primary)] dark:to-[var(--color-primary-container)]'
               }`}
             >
               {salvando ? (

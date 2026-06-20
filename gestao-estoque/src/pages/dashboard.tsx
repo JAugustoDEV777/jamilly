@@ -97,7 +97,7 @@ export const Dashboard: React.FC = () => {
 
         {/* Botão de ação rápida — leva para a tela de movimentações */}
         <button
-          onClick={() => navegar('/movimentacoes')}
+          onClick={() => navegar('/app/movimentacoes')}
           className="flex items-center gap-2 bg-[#3525cd] hover:bg-[#4d44e3] text-white font-semibold px-5 py-2.5 sm:px-6 sm:py-3 rounded-full text-sm shadow-md hover:shadow-lg transition-all active:scale-95 whitespace-nowrap"
         >
           <span className="material-symbols-outlined text-lg">add</span>
@@ -282,7 +282,7 @@ export const Dashboard: React.FC = () => {
 
           {/* Botão para ver o histórico completo */}
           <button
-            onClick={() => navegar('/movimentacoes')}
+            onClick={() => navegar('/app/movimentacoes')}
             className="w-full mt-4 md:mt-6 py-2.5 md:py-3 hover:bg-[#3525cd]/5 text-[#3525cd] font-bold text-sm rounded-xl transition-all flex items-center justify-center gap-2 border border-[#3525cd]/10"
           >
             <span>Ver movimentações completas</span>

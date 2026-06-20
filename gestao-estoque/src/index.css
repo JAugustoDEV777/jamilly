@@ -85,9 +85,12 @@ html.dark body {
 }
 
 html.dark .bg-white,
+html.dark [class*='bg-white'],
+html.dark [class*='bg-white/'],
 html.dark [class*='bg-[#fcf8ff]'],
 html.dark [class*='bg-[#f5f2ff]'],
-html.dark [class*='bg-[#eae6f4]'] {
+html.dark [class*='bg-[#eae6f4]'],
+html.dark [class*='bg-[#f0ecf9]'] {
   background-color: var(--color-surface-container) !important;
 }
 
@@ -100,9 +103,27 @@ html.dark [class*='border-[#c7c4d8]'] {
   border-color: var(--color-outline-variant) !important;
 }
 
-html.dark [class*='text-[#464555]'],
-html.dark [class*='text-[#1b1b24]'] {
+/* For classes that use explicit hex color tokens in classnames (eg. text-[#464555])
+   force them to use the dark-mode text token to improve readability. */
+html.dark [class*='text-[#'],
+html.dark [class*='text-on-surface-variant'],
+html.dark [class*='text-on-surface'] {
   color: var(--color-on-surface) !important;
+}
+
+/* Ensure borders and outlines using arbitrary hex tokens get dark-mode color */
+html.dark [class*='border-[#'],
+html.dark [class*='border-on-surface'] {
+  border-color: var(--color-outline-variant) !important;
+}
+
+/* Inputs, selects and other form controls that rely on bg-white variants */
+html.dark input,
+html.dark select,
+html.dark textarea,
+html.dark button {
+  background-color: transparent;
+  color: var(--color-on-surface);
 }
 
 /* ── RESET E BASE ── */
