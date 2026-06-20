@@ -12,7 +12,7 @@ import { Login } from '../pages/login';
    ROTA PRIVADA (AUTH GUARD)
    Verifica se o usuário está logado (localStorage).
    ============================================================ */
-const RotaPrivada = ({ children }: { children: JSX.Element }) => {
+const RotaPrivada = ({ children }: { children: React.ReactNode }) => {
   const usuario = localStorage.getItem('usuario');
   return usuario ? children : <Navigate to="/login" replace />;
 };
