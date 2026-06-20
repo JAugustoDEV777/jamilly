@@ -226,6 +226,8 @@ app.post('/api/auth/register', async (req: Request, res: Response) => {
 app.put('/api/auth/profile', async (req: Request, res: Response) => {
   const { id, nome, email, cargo, foto } = req.body
 
+  console.log('[PUT /api/auth/profile] Requisição recebida:', { id, nome, email, cargo, temFoto: !!foto })
+
   const userId = Number(id)
   if (!userId || Number.isNaN(userId)) {
     res.status(400).json({ error: 'ID do usuário é obrigatório e deve ser numérico' })
@@ -257,7 +259,13 @@ app.put('/api/auth/profile', async (req: Request, res: Response) => {
       return
     }
 
-    console.error('Erro ao atualizar perfil:', error)
+    // Log detalhado para diagnosticar problemas
+    console.error('[PUT /api/auth/profile] Erro ao atualizar perfil:', {
+      message: error?.message,
+      code: error?.code,
+      meta: error?.meta,
+      stack: error?.stack,
+    })
     res.status(500).json({ error: 'Erro interno no servidor' })
   }
 })
