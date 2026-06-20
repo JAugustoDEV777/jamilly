@@ -1,0 +1,206 @@
+/* ============================================================
+   ESTILOS GLOBAIS DO SISTEMA InvSync Pro
+   Estratégia: Mobile-first (base mobile, então sm/md/lg para cima)
+   ============================================================ */
+
+/* ── VARIÁVEIS DE COR (Design Tokens) ──
+   Paleta roxo/azul para marca primária + verde para operações positivas */
+:root {
+  /* Superfícies (do mais claro ao mais escuro) */
+  --color-background: #fcf8ff;
+  --color-surface-container-lowest: #ffffff;
+  --color-surface-container-low: #f5f2ff;
+  --color-surface-container: #f0ecf9;
+  --color-surface-container-high: #eae6f4;
+  --color-surface-container-highest: #e4e1ee;
+
+  /* Cor primária — roxo/índigo da marca */
+  --color-primary: #3525cd;
+  --color-primary-container: #4f46e5;
+  --color-on-primary: #ffffff;
+  --color-on-primary-container: #dad7ff;
+
+  /* Cor secundária — verde para entradas/positivo */
+  --color-secondary: #006c49;
+  --color-secondary-container: #6cf8bb;
+  --color-on-secondary: #ffffff;
+  --color-on-secondary-container: #00714d;
+
+  /* Cor de erro — vermelho para críticos/negativos */
+  --color-error: #ba1a1a;
+  --color-error-container: #ffdad6;
+  --color-on-error: #ffffff;
+  --color-on-error-container: #93000a;
+
+  /* Texto principal e secundário */
+  --color-on-surface: #1b1b24;
+  --color-on-surface-variant: #464555;
+  --color-outline-variant: #c7c4d8;
+
+  /* Safe area fallbacks */
+  --safe-top: env(safe-area-inset-top, 0px);
+  --safe-bottom: env(safe-area-inset-bottom, 0px);
+  --safe-left: env(safe-area-inset-left, 0px);
+  --safe-right: env(safe-area-inset-right, 0px);
+}
+
+/* ── RESET E BASE ── */
+*,
+*::before,
+*::after {
+  box-sizing: border-box; /* Inclui padding/border no cálculo de largura */
+}
+
+html {
+  /* Garante que scroll seja suave em toda a aplicação */
+  scroll-behavior: smooth;
+  /* Previne zoom automático em inputs em iOS (mínimo 16px) */
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+  /* Previne bounce scroll em iOS */
+  height: 100%;
+}
+
+body {
+  font-family: 'Inter', sans-serif;
+  background-color: var(--color-background);
+  color: var(--color-on-surface);
+  margin: 0;
+  padding: 0;
+  min-height: 100%;
+  min-height: 100dvh;
+  /* Suavidade de renderização de fontes */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  /* Evita scroll horizontal indesejado em mobile */
+  overflow-x: hidden;
+  /* Suporte a safe area do iPhone (notch + Dynamic Island) */
+  padding-top: env(safe-area-inset-top);
+  padding-left: env(safe-area-inset-left);
+  padding-right: env(safe-area-inset-right);
+}
+
+#root {
+  min-height: 100vh;
+  min-height: 100dvh;
+}
+
+/* Garante que imagens e elementos de bloco não causem overflow */
+img,
+video,
+iframe {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+/* ── SCROLLBAR PERSONALIZADA ──
+   Aplicada com a classe .custom-scrollbar nos containers */
+.custom-scrollbar::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: transparent;
+}
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: var(--color-outline-variant);
+  border-radius: 10px;
+}
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: var(--color-on-surface-variant);
+}
+
+/* ── ÁREA DE TOQUE MÍNIMA PARA MOBILE ──
+   Botões e links devem ter pelo menos 44x44px para uso confortável */
+button,
+a,
+[role="button"] {
+  min-height: 44px; /* Material Design recomenda 48px, Apple recomenda 44pt */
+  cursor: pointer;
+  /* Remove o destaque azul de toque em iOS */
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* ── ANIMAÇÃO DE ENTRADA DAS PÁGINAS ──
+   Aplicada com a classe .animar-entrada no container de conteúdo */
+@keyframes entrarSuave {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animar-entrada {
+  animation: entrarSuave 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+  transform: none;
+}
+
+/* ── UTILITÁRIOS DE RESPONSIVIDADE GLOBAL ──
+   Classes auxiliares para mostrar/ocultar elementos em breakpoints */
+
+/* Oculta em mobile, exibe a partir de sm (≥ 640px) */
+.sm\:block { display: none; }
+@media (min-width: 640px) {
+  .sm\:block { display: block; }
+}
+
+/* Garante que a área de conteúdo não fique estreita demais em qualquer tela */
+.conteudo-principal {
+  width: 100%;
+  max-width: 1400px; /* Limita largura em monitores ultra-wide */
+  margin: 0 auto;
+}
+
+/* ── AJUSTES ESPECÍFICOS PARA DISPOSITIVOS MÓVEIS ──
+   Pequenos resets de comportamento padrão do navegador */
+@media (max-width: 640px) {
+  /* Remove bordas arredondadas padrão do select em iOS */
+  select {
+    -webkit-appearance: none;
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24'%3E%3Cpath fill='%23464555' d='M7 10l5 5 5-5z'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 0.75rem center;
+    padding-right: 2rem;
+  }
+
+  /* Aumenta levemente o tamanho da fonte base em telas muito pequenas */
+  input,
+  select,
+  textarea {
+    font-size: 16px; /* Evita zoom automático ao focar em iOS */
+  }
+}
+
+/* ── SUPORTE AO iPHONE 16 PRO MAX E TELAS COM NOTCH / DYNAMIC ISLAND ──
+   Garante que o conteúdo não seja coberto pelo Dynamic Island ou barra de home */
+
+/* Navbar inferior respeita a safe area */
+.navbar-inferior-safe {
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+}
+
+/* Header respeita a safe area superior (Dynamic Island) */
+.header-safe {
+  padding-top: env(safe-area-inset-top, 0px);
+}
+
+/* ── VIEWPORT HEIGHT CORRETO EM MOBILE ──
+   dvh (dynamic viewport height) garante que modais cubram a tela real
+   incluindo a barra de endereço do browser */
+.h-screen-mobile {
+  height: 100vh;
+  height: 100dvh;
+}
+
+/* ── MELHORIAS DE PERFORMANCE ──
+   Melhora a renderização de elementos animados */
+.modal-overlay,
+[class*="OverlayModal"] {
+  will-change: opacity;
+}
