@@ -126,6 +126,30 @@ html.dark button {
   color: var(--color-on-surface);
 }
 
+/* Força gradientes e backgrounds claros a usarem superfícies escuras no modo escuro
+   Isso corrige cards que ficavam muito claros (ex.: Configurações, Dados Pessoais). */
+html.dark [class*='bg-gradient-to-br'],
+html.dark .bg-gradient-to-br,
+html.dark [class*='from-white'],
+html.dark [class*='via-[#f5f2ff]'],
+html.dark [class*='to-[#eae6f4]'],
+html.dark [class*='from-[#3525cd]'] {
+  background-image: none !important;
+  background-color: var(--color-surface-container-high) !important;
+  color: var(--color-on-surface) !important;
+}
+
+/* Bordas claras utilizadas em cards/inputs */
+html.dark [class*='border-white'],
+html.dark [class*='border-[#ffffff]'] {
+  border-color: var(--color-outline-variant) !important;
+}
+
+/* Ícones e símbolos que usavam um tom cinza claro muito próximo do fundo */
+html.dark .material-symbols-outlined {
+  color: var(--color-on-surface-variant) !important;
+}
+
 /* ── RESET E BASE ── */
 *,
 *::before,
