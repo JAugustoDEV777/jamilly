@@ -418,7 +418,7 @@ export const Configuracoes: React.FC = () => {
               </div>
             )}
 
-            <div className="space-y-3 mb-6">
+            <div className="space-y-3 mb-6 max-h-80 overflow-y-auto pr-1">
               {carregandoCategorias ? (
                 <div className="text-center py-6 text-on-surface-variant">
                   <span className="material-symbols-outlined text-4xl animate-spin">progress_activity</span>

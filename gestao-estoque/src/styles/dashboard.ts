@@ -11,24 +11,9 @@ import styled from 'styled-components';
 /* Container em grade bento de 12 colunas para os cards de métricas */
 export const ContainerPainel = styled.div`
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(clamp(280px, 90vw, 320px), 1fr));
+  grid-template-columns: repeat(12, minmax(0, 1fr));
   gap: clamp(0.75rem, 2vw, 1.5rem);
   width: 100%;
-
-  /* Mobile (< 430px): 1 coluna */
-  @media (max-width: 430px) {
-    grid-template-columns: 1fr;
-  }
-
-  /* Tablet (430px - 768px): 2 colunas */
-  @media (min-width: 430px) and (max-width: 768px) {
-    grid-template-columns: repeat(2, 1fr);
-  }
-
-  /* Desktop (> 1024px): 4 colunas */
-  @media (min-width: 1024px) {
-    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-  }
 `;
 
 /* Card individual de métricas rápidas */

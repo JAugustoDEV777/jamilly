@@ -47,6 +47,20 @@ export const Dashboard: React.FC = () => {
   const formatarMoeda = (valor: number) =>
     valor.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
 
+  const formatarNumeroAbreviado = (valor: number) => {
+    const absValor = Math.abs(valor);
+    if (absValor >= 1000000000) {
+      return `${(valor / 1000000000).toFixed(1).replace(/\.0$/, '')}B`;
+    }
+    if (absValor >= 1000000) {
+      return `${(valor / 1000000).toFixed(1).replace(/\.0$/, '')}M`;
+    }
+    if (absValor >= 1000) {
+      return `${(valor / 1000).toFixed(1).replace(/\.0$/, '')}K`;
+    }
+    return String(valor);
+  };
+
   // Formata valores muito grandes com abreviação compacta
   const formatarMoedaAbreviada = (valor: number) => {
     if (Math.abs(valor) >= 1000000) {
@@ -113,7 +127,7 @@ export const Dashboard: React.FC = () => {
         <CardMetrica className="col-span-12 sm:col-span-6 lg:col-span-3">
           <div>
             <RotuloCard>Total de produtos</RotuloCard>
-            <ValorCard>{totalSkus}</ValorCard>
+            <ValorCard>{formatarNumeroAbreviado(totalSkus)}</ValorCard>
             <IndicadorTendencia>
               <span className="material-symbols-outlined text-lg mr-1">inventory</span>
               <span>Produtos</span>
@@ -142,7 +156,7 @@ export const Dashboard: React.FC = () => {
           <div>
             <RotuloCard>Estoque Crítico</RotuloCard>
             <ValorCard $corValor={produtosCriticos > 0 ? 'erro' : 'padrao'}>
-              {produtosCriticos}
+              {formatarNumeroAbreviado(produtosCriticos)}
             </ValorCard>
             <IndicadorTendencia $tipoTendencia={produtosCriticos > 0 ? 'baixa' : 'neutro'}>
               <span className="material-symbols-outlined text-lg mr-1">
