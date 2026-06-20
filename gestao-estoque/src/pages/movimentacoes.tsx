@@ -270,7 +270,6 @@ export const Movimentacoes: React.FC = () => {
     }
   };
 
-  // Confirma a exclusão dos registros selecionados
   const confirmarExclusaoSelecionados = async () => {
     definirExcluindo(true);
     try {
@@ -282,6 +281,7 @@ export const Movimentacoes: React.FC = () => {
     definirIdsSelecionados([]);
     definirExibirModalConfirmarExclusao(false);
     definirModoSelecao(false);
+    window.location.reload();
   };
 
 
@@ -522,19 +522,13 @@ export const Movimentacoes: React.FC = () => {
       {/* ── BARRA DE SELEÇÃO (visível em modo de seleção) ── */}
       {modoSelecao && (
         <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3 bg-[#fff1f2] border border-[#f5c2c7] rounded-xl p-3 sm:p-4 shadow-sm">
-          <label className="flex items-center gap-2 text-sm font-semibold text-on-surface cursor-pointer py-1">
-            <input
-              type="checkbox"
-              checked={movimentacoesFiltradas.length > 0 && idsSelecionados.length === movimentacoesFiltradas.length}
-              onChange={alternarSelecionarTodos}
-              className="w-4 h-4 accent-[#ba1a1a]"
-            />
+          <div className="flex items-center gap-2 text-sm font-semibold text-on-surface py-1">
             <span>
               {idsSelecionados.length > 0
                 ? `${idsSelecionados.length} selecionado(s)`
-                : 'Selecionar todos'}
+                : 'Nenhum selecionado'}
             </span>
-          </label>
+          </div>
           <button
             type="button"
             disabled={idsSelecionados.length === 0}

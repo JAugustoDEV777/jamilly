@@ -887,6 +887,7 @@ export const Estoque: React.FC = () => {
                     }
                     definirExibirModalConfirmarExclusao(false);
                     definirProdutoParaExcluir(null);
+                    window.location.reload();
                   }}
                   className="w-full inline-flex items-center justify-center gap-2 bg-[#ba1a1a] hover:bg-[#9e1616] text-white font-bold py-3 px-4 rounded-lg shadow-md transition-all"
                 >
