@@ -119,14 +119,19 @@ const AvatarPerfil = styled.div`
   height: 2.5rem;
   min-width: 2.5rem; /* Evita que o avatar encolha */
   border-radius: 9999px;
-  background-color: var(--color-surface-container-high);
-  border: 1px solid var(--color-outline-variant);
+  background: linear-gradient(135deg, var(--color-primary), #4d44e3);
+  border: 1px solid var(--color-primary);
   display: flex;
   align-items: center;
   justify-content: center;
   font-weight: 700;
-  color: var(--color-on-surface);
+  color: white;
   font-size: 0.875rem;
+  
+  /* Quando há imagem, remove o gradiente */
+  img {
+    border-radius: 9999px;
+  }
 `;
 
 /* ─────────────────────────────────────────

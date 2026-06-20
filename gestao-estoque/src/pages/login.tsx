@@ -173,11 +173,11 @@ export const Login: React.FC = () => {
           </p>
           <div className="flex items-center gap-3">
             <div className="w-10 h-10 bg-[#3525cd] text-white rounded-full flex items-center justify-center font-bold text-sm">
-              CL
+              J
             </div>
             <div>
-              <p className="font-bold text-sm text-on-surface">Carlos Lemes</p>
-              <p className="text-xs text-on-surface-variant">Diretor de Logística, Distribuidora XYZ</p>
+              <p className="font-bold text-sm text-on-surface">Jamilly Maia</p>
+              <p className="text-xs text-on-surface-variant">Administradora</p>
             </div>
           </div>
         </div>
