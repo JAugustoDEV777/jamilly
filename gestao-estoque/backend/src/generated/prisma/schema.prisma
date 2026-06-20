@@ -67,7 +67,7 @@ model Movimentacao {
 /// Representa os usuários do sistema com acesso ao Painel
 model Usuario {
   id        Int      @id @default(autoincrement())
-  nome      String
+  nome      String   @unique
   email     String   @unique
   senha     String
   cargo     String?

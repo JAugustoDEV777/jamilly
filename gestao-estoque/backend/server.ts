@@ -1,4 +1,5 @@
-import app from './app'
+import 'dotenv/config'
+import app from './src/app'
 
 const port = Number(process.env.PORT ?? 4000)
 

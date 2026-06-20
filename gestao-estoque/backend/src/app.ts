@@ -97,7 +97,7 @@ app.post('/api/movimentacoes', async (req: Request, res: Response) => {
   const { produtoId, quantidade, precoVendaUnitario, tipo, lucroEstimado, destinoCliente, conferenteResponsavel } = req.body
   const movimentacao = await prisma.movimentacao.create({
     data: {
-      produtoId,
+      produto: { connect: { id: produtoId } },
       quantidade,
       precoVendaUnitario,
       tipo,

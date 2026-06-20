@@ -6120,15 +6120,15 @@ export namespace Prisma {
 
   export type UsuarioWhereUniqueInput = Prisma.AtLeast<{
     id?: number
+    nome?: string
     email?: string
     AND?: UsuarioWhereInput | UsuarioWhereInput[]
     OR?: UsuarioWhereInput[]
     NOT?: UsuarioWhereInput | UsuarioWhereInput[]
-    nome?: StringFilter<"Usuario"> | string
     senha?: StringFilter<"Usuario"> | string
     cargo?: StringNullableFilter<"Usuario"> | string | null
     createdAt?: DateTimeFilter<"Usuario"> | Date | string
-  }, "id" | "email">
+  }, "id" | "nome" | "email">
 
   export type UsuarioOrderByWithAggregationInput = {
     id?: SortOrder
