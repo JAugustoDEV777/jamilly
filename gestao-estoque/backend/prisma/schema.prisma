@@ -6,8 +6,6 @@ generator client {
 
 datasource db {
   provider  = "postgresql"
-  url       = env("DATABASE_URL")
-  directUrl = env("DIRECT_URL")
 }
 
 /// MODELO: Categoria
@@ -64,3 +62,14 @@ model Movimentacao {
   produtoId           Int
   produto             Produto  @relation(fields: [produtoId], references: [id], onDelete: Cascade)
 }
+
+/// MODELO: Usuario
+/// Representa os usuários do sistema com acesso ao Painel
+model Usuario {
+  id        Int      @id @default(autoincrement())
+  nome      String
+  email     String   @unique
+  senha     String
+  cargo     String?
+  createdAt DateTime @default(now())
+}

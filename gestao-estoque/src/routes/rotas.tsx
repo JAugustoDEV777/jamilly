@@ -5,6 +5,8 @@ import { Cabecalho } from '../components/cabecalho';
 import { Dashboard } from '../pages/dashboard';
 import { Estoque } from '../pages/estoque';
 import { Movimentacoes } from '../pages/movimentacoes';
+import { Configuracoes } from '../pages/configuracoes';
+import { Login } from '../pages/login';
 
 /* ============================================================
    LAYOUT PRINCIPAL DA APLICAÇÃO
@@ -56,6 +58,9 @@ export const Rotas: React.FC = () => {
   return (
     <BrowserRouter>
       <Routes>
+        {/* Rota de Login (fora do layout principal) */}
+        <Route path="/login" element={<Login />} />
+
         {/* Rota raiz que usa o layout principal com sidebar */}
         <Route path="/" element={<LayoutPrincipal />}>
 
@@ -67,6 +72,9 @@ export const Rotas: React.FC = () => {
 
           {/* Histórico e registro de movimentações de carga */}
           <Route path="movimentacoes" element={<Movimentacoes />} />
+
+          {/* Configurações do sistema */}
+          <Route path="configuracoes" element={<Configuracoes />} />
         </Route>
       </Routes>
     </BrowserRouter>

@@ -151,6 +151,15 @@ exports.Prisma.MovimentacaoScalarFieldEnum = {
   produtoId: 'produtoId'
 };
 
+exports.Prisma.UsuarioScalarFieldEnum = {
+  id: 'id',
+  nome: 'nome',
+  email: 'email',
+  senha: 'senha',
+  cargo: 'cargo',
+  createdAt: 'createdAt'
+};
+
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -161,11 +170,17 @@ exports.Prisma.QueryMode = {
   insensitive: 'insensitive'
 };
 
+exports.Prisma.NullsOrder = {
+  first: 'first',
+  last: 'last'
+};
+
 
 exports.Prisma.ModelName = {
   Categoria: 'Categoria',
   Produto: 'Produto',
-  Movimentacao: 'Movimentacao'
+  Movimentacao: 'Movimentacao',
+  Usuario: 'Usuario'
 };
 
 /**

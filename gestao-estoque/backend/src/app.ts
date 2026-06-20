@@ -159,4 +159,63 @@ app.delete('/api/movimentacoes/:id', async (req: Request, res: Response) => {
   res.status(204).send()
 })
 
+// === ROTAS DE AUTENTICAÇÃO ===
+
+app.post('/api/auth/login', async (req: Request, res: Response) => {
+  const { email, senha } = req.body
+
+  try {
+    const usuario = await prisma.usuario.findUnique({
+      where: { email },
+    })
+
+    if (!usuario) {
+      res.status(401).json({ error: 'E-mail ou senha inválidos' })
+      return
+    }
+
+    if (usuario.senha !== senha) {
+      res.status(401).json({ error: 'E-mail ou senha inválidos' })
+      return
+    }
+
+    // Retorna os dados do usuário (exceto a senha)
+    const { senha: _, ...userData } = usuario
+    res.json({ user: userData })
+  } catch (error) {
+    console.error('Erro no login:', error)
+    res.status(500).json({ error: 'Erro interno no servidor' })
+  }
+})
+
+app.post('/api/auth/register', async (req: Request, res: Response) => {
+  const { nome, email, senha, cargo } = req.body
+
+  try {
+    const usuarioExistente = await prisma.usuario.findUnique({
+      where: { email },
+    })
+
+    if (usuarioExistente) {
+      res.status(400).json({ error: 'E-mail já está em uso' })
+      return
+    }
+
+    const usuario = await prisma.usuario.create({
+      data: {
+        nome,
+        email,
+        senha,
+        cargo,
+      },
+    })
+
+    const { senha: _, ...userData } = usuario
+    res.status(201).json({ user: userData })
+  } catch (error) {
+    console.error('Erro no registro:', error)
+    res.status(500).json({ error: 'Erro interno no servidor' })
+  }
+})
+
 export default app

@@ -1,6 +1,7 @@
 generator client {
-  provider = "prisma-client-js"
-  output   = "../src/generated/prisma"
+  provider      = "prisma-client-js"
+  output        = "../src/generated/prisma"
+  binaryTargets = ["native", "rhel-openssl-3.0.x"]
 }
 
 datasource db {
@@ -60,4 +61,15 @@ model Movimentacao {
   // RELACIONAMENTO COM O PRODUTO (Para saber qual produto saiu)
   produtoId Int
   produto   Produto @relation(fields: [produtoId], references: [id], onDelete: Cascade)
+}
+
+/// MODELO: Usuario
+/// Representa os usuários do sistema com acesso ao Painel
+model Usuario {
+  id        Int      @id @default(autoincrement())
+  nome      String
+  email     String   @unique
+  senha     String
+  cargo     String?
+  createdAt DateTime @default(now())
 }
