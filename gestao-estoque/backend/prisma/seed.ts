@@ -9,9 +9,9 @@ async function main() {
     where: { email: 'admin@email.com' }, // O Prisma usa o campo único para verificar se já existe
     update: {}, // Se já existir, deixa como está (não altera nada)
     create: {
-      nome: 'Administrador',
-      email: 'admin@email.com',
-      senha: 'uma_senha_criptografada_aqui', // Lembre-se de usar bcrypt depois!
+      nome: 'deposito',
+      email: 'deposito@gmail.com',
+      senha: 'mimosa1@', // Lembre-se de usar bcrypt depois!
       cargo: 'ADMIN',
     },
   });
