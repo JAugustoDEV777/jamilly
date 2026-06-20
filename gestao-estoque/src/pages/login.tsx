@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 
 export const Login: React.FC = () => {
   const navegar = useNavigate();
-  const [email, setEmail] = useState('');
+  const [nomeUsuario, setNomeUsuario] = useState('');
   const [senha, setSenha] = useState('');
   const [mostrarSenha, setMostrarSenha] = useState(false);
   const [lembrar, setLembrar] = useState(false);
@@ -20,7 +20,7 @@ export const Login: React.FC = () => {
       const response = await fetch('http://localhost:4000/api/auth/login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, senha }),
+        body: JSON.stringify({ nome: nomeUsuario, senha }),
       });
 
       const data = await response.json();
@@ -72,16 +72,16 @@ export const Login: React.FC = () => {
               </div>
             )}
 
-            {/* Campo E-mail */}
+            {/* Campo Nome de usuário */}
             <div>
-              <label className="block text-xs font-bold text-on-surface-variant mb-1.5 ml-1">E-mail</label>
+              <label className="block text-xs font-bold text-on-surface-variant mb-1.5 ml-1">Nome de usuário</label>
               <div className="relative flex items-center">
-                <span className="material-symbols-outlined absolute left-3.5 text-on-surface-variant text-[20px]">mail</span>
+                <span className="material-symbols-outlined absolute left-3.5 text-on-surface-variant text-[20px]">person</span>
                 <input
-                  type="email"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  placeholder="nome@empresa.com.br"
+                  type="text"
+                  value={nomeUsuario}
+                  onChange={(e) => setNomeUsuario(e.target.value)}
+                  placeholder="Seu nome de usuário"
                   className="w-full bg-[#f5f2ff] border border-[#dcd8e5] text-sm rounded-xl py-3 pl-10 pr-4 outline-none focus:border-[#3525cd] focus:ring-1 focus:ring-[#3525cd] transition-all"
                   required
                 />

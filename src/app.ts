@@ -162,20 +162,20 @@ app.delete('/api/movimentacoes/:id', async (req: Request, res: Response) => {
 // === ROTAS DE AUTENTICAÇÃO ===
 
 app.post('/api/auth/login', async (req: Request, res: Response) => {
-  const { email, senha } = req.body
+  const { nome, senha } = req.body
 
   try {
     const usuario = await prisma.usuario.findUnique({
-      where: { email },
+      where: { nome },
     })
 
     if (!usuario) {
-      res.status(401).json({ error: 'E-mail ou senha inválidos' })
+      res.status(401).json({ error: 'Nome de usuário ou senha inválidos' })
       return
     }
 
     if (usuario.senha !== senha) {
-      res.status(401).json({ error: 'E-mail ou senha inválidos' })
+      res.status(401).json({ error: 'Nome de usuário ou senha inválidos' })
       return
     }
 
@@ -192,12 +192,17 @@ app.post('/api/auth/register', async (req: Request, res: Response) => {
   const { nome, email, senha, cargo } = req.body
 
   try {
-    const usuarioExistente = await prisma.usuario.findUnique({
-      where: { email },
+    const usuarioExistente = await prisma.usuario.findFirst({
+      where: {
+        OR: [
+          { email },
+          { nome },
+        ],
+      },
     })
 
     if (usuarioExistente) {
-      res.status(400).json({ error: 'E-mail já está em uso' })
+      res.status(400).json({ error: 'Nome de usuário ou e-mail já está em uso' })
       return
     }
 
