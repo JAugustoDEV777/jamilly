@@ -245,7 +245,13 @@ export const BarraNavegacao: React.FC = () => {
         <SecaoRodapeSidebar>
           <div className="flex flex-col gap-2">
             <PerfilInfo>
-              <AvatarPerfil>{iniciais}</AvatarPerfil>
+              <AvatarPerfil>
+                {usuario?.foto ? (
+                  <img src={usuario.foto} alt="Foto de perfil" className="w-full h-full object-cover" />
+                ) : (
+                  iniciais
+                )}
+              </AvatarPerfil>
               <div className="flex-1 overflow-hidden">
                 <p className="font-semibold text-sm truncate" style={{ color: 'var(--color-on-surface)' }}>
                   {usuario?.nome || 'Usuário'}

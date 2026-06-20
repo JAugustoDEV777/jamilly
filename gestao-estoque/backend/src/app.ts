@@ -188,7 +188,7 @@ app.post('/api/auth/login', async (req: Request, res: Response) => {
 })
 
 app.post('/api/auth/register', async (req: Request, res: Response) => {
-  const { nome, email, senha, cargo } = req.body
+  const { nome, email, senha, cargo, foto } = req.body
 
   try {
     const usuarioExistente = await prisma.usuario.findFirst({
@@ -211,6 +211,7 @@ app.post('/api/auth/register', async (req: Request, res: Response) => {
         email,
         senha,
         cargo,
+        foto,
       },
     })
 
@@ -218,6 +219,57 @@ app.post('/api/auth/register', async (req: Request, res: Response) => {
     res.status(201).json({ user: userData })
   } catch (error) {
     console.error('Erro no registro:', error)
+    res.status(500).json({ error: 'Erro interno no servidor' })
+  }
+})
+
+app.put('/api/auth/profile', async (req: Request, res: Response) => {
+  const { id, nome, email, cargo, foto } = req.body
+
+  if (!id) {
+    res.status(400).json({ error: 'ID do usuário é obrigatório' })
+    return
+  }
+
+  try {
+    const usuarioExistenteComMesmoNome = await prisma.usuario.findFirst({
+      where: {
+        nome,
+        NOT: { id },
+      },
+    })
+
+    if (usuarioExistenteComMesmoNome) {
+      res.status(400).json({ error: 'Nome de usuário já está em uso' })
+      return
+    }
+
+    const usuarioExistenteComMesmoEmail = await prisma.usuario.findFirst({
+      where: {
+        email,
+        NOT: { id },
+      },
+    })
+
+    if (usuarioExistenteComMesmoEmail) {
+      res.status(400).json({ error: 'E-mail já está em uso' })
+      return
+    }
+
+    const usuario = await prisma.usuario.update({
+      where: { id },
+      data: {
+        nome,
+        email,
+        cargo,
+        foto,
+      },
+    })
+
+    const { senha: _, ...userData } = usuario
+    res.json({ user: userData })
+  } catch (error) {
+    console.error('Erro ao atualizar perfil:', error)
     res.status(500).json({ error: 'Erro interno no servidor' })
   }
 })
