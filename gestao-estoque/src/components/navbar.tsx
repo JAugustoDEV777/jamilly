@@ -220,22 +220,22 @@ export const BarraNavegacao: React.FC = () => {
 
         {/* Links de navegação */}
         <MenuLinks>
-          <LinkMenu to="/" end>
+          <LinkMenu to="/app" end>
             <span className="material-symbols-outlined text-2xl">dashboard</span>
             <span>Painel</span>
           </LinkMenu>
 
-          <LinkMenu to="/estoque">
+          <LinkMenu to="/app/estoque">
             <span className="material-symbols-outlined text-2xl">liquor</span>
             <span>Estoque</span>
           </LinkMenu>
 
-          <LinkMenu to="/movimentacoes">
+          <LinkMenu to="/app/movimentacoes">
             <span className="material-symbols-outlined text-2xl">local_shipping</span>
             <span>Movimentações</span>
           </LinkMenu>
 
-          <LinkMenu to="/configuracoes">
+          <LinkMenu to="/app/configuracoes">
             <span className="material-symbols-outlined text-2xl">settings</span>
             <span>Configurações</span>
           </LinkMenu>
@@ -276,25 +276,25 @@ export const BarraNavegacao: React.FC = () => {
       <BarraNavegacaoInferior>
 
         {/* Botão Painel */}
-        <LinkMenuMovel to="/" end>
+        <LinkMenuMovel to="/app" end>
           <span className="material-symbols-outlined text-xl">dashboard</span>
           <span>Painel</span>
         </LinkMenuMovel>
 
         {/* Botão Estoque */}
-        <LinkMenuMovel to="/estoque">
+        <LinkMenuMovel to="/app/estoque">
           <span className="material-symbols-outlined text-xl">liquor</span>
           <span>Estoque</span>
         </LinkMenuMovel>
 
         {/* Botão Movimentações */}
-        <LinkMenuMovel to="/movimentacoes">
+        <LinkMenuMovel to="/app/movimentacoes">
           <span className="material-symbols-outlined text-xl">local_shipping</span>
           <span>Movimentos</span>
         </LinkMenuMovel>
 
         {/* Botão Configurações */}
-        <LinkMenuMovel to="/configuracoes">
+        <LinkMenuMovel to="/app/configuracoes">
           <span className="material-symbols-outlined text-xl">settings</span>
           <span>Config</span>
         </LinkMenuMovel>

@@ -78,6 +78,33 @@ html.dark {
   --color-outline-variant: #49464f;
 }
 
+/* ── DARK MODE OVERRIDES PARA CLASSES FIXAS ── */
+html.dark body {
+  background-color: var(--color-background);
+  color: var(--color-on-surface);
+}
+
+html.dark .bg-white,
+html.dark [class*='bg-[#fcf8ff]'],
+html.dark [class*='bg-[#f5f2ff]'],
+html.dark [class*='bg-[#eae6f4]'] {
+  background-color: var(--color-surface-container) !important;
+}
+
+html.dark [class*='bg-[#dcd8e5]'] {
+  background-color: var(--color-surface-container-highest) !important;
+}
+
+html.dark [class*='border-[#dcd8e5]'],
+html.dark [class*='border-[#c7c4d8]'] {
+  border-color: var(--color-outline-variant) !important;
+}
+
+html.dark [class*='text-[#464555]'],
+html.dark [class*='text-[#1b1b24]'] {
+  color: var(--color-on-surface) !important;
+}
+
 /* ── RESET E BASE ── */
 *,
 *::before,

@@ -67,11 +67,14 @@ export const Rotas: React.FC = () => {
   return (
     <BrowserRouter>
       <Routes>
+        {/* Rota raiz redireciona para login */}
+        <Route path="/" element={<Navigate to="/login" replace />} />
+
         {/* Rota de Login (fora do layout principal) */}
         <Route path="/login" element={<Login />} />
 
-        {/* Rota raiz que usa o layout principal com sidebar (Protegida) */}
-        <Route path="/" element={
+        {/* Rota privada que usa o layout principal com sidebar (Protegida) */}
+        <Route path="/app" element={
           <RotaPrivada>
             <LayoutPrincipal />
           </RotaPrivada>

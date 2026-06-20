@@ -28,7 +28,7 @@ export const Login: React.FC = () => {
       if (response.ok) {
         // Sucesso: Salva os dados no localStorage e redireciona
         localStorage.setItem('usuario', JSON.stringify(data.user));
-        navegar('/');
+        navegar('/app');
       } else {
         // Falha: Mostra o erro retornado
         setErro(data.error || 'Erro ao fazer login.');
