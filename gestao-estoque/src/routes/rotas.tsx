@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter, Routes, Route, Outlet } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, Outlet, Navigate } from 'react-router-dom';
 import { BarraNavegacao } from '../components/navbar';
 import { Cabecalho } from '../components/cabecalho';
 import { Dashboard } from '../pages/dashboard';
@@ -7,6 +7,15 @@ import { Estoque } from '../pages/estoque';
 import { Movimentacoes } from '../pages/movimentacoes';
 import { Configuracoes } from '../pages/configuracoes';
 import { Login } from '../pages/login';
+
+/* ============================================================
+   ROTA PRIVADA (AUTH GUARD)
+   Verifica se o usuário está logado (localStorage).
+   ============================================================ */
+const RotaPrivada = ({ children }: { children: JSX.Element }) => {
+  const usuario = localStorage.getItem('usuario');
+  return usuario ? children : <Navigate to="/login" replace />;
+};
 
 /* ============================================================
    LAYOUT PRINCIPAL DA APLICAÇÃO
@@ -61,8 +70,12 @@ export const Rotas: React.FC = () => {
         {/* Rota de Login (fora do layout principal) */}
         <Route path="/login" element={<Login />} />
 
-        {/* Rota raiz que usa o layout principal com sidebar */}
-        <Route path="/" element={<LayoutPrincipal />}>
+        {/* Rota raiz que usa o layout principal com sidebar (Protegida) */}
+        <Route path="/" element={
+          <RotaPrivada>
+            <LayoutPrincipal />
+          </RotaPrivada>
+        }>
 
           {/* Página inicial: Painel de Controle */}
           <Route index element={<Dashboard />} />

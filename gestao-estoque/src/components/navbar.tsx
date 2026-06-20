@@ -192,6 +192,17 @@ const LinkMenuMovel = styled(NavLink)`
 
 
 export const BarraNavegacao: React.FC = () => {
+  const usuarioRaw = localStorage.getItem('usuario');
+  const usuario = usuarioRaw ? JSON.parse(usuarioRaw) : null;
+  const iniciais = usuario?.nome 
+    ? usuario.nome.split(' ').slice(0, 2).map((n: string) => n[0]).join('').toUpperCase() 
+    : 'US';
+
+  const handleLogout = () => {
+    localStorage.removeItem('usuario');
+    window.location.href = '/login';
+  };
+
   return (
     <>
       {/* ── 1. SIDEBAR LATERAL (Visível apenas em Desktop) ── */}
@@ -223,21 +234,35 @@ export const BarraNavegacao: React.FC = () => {
             <span className="material-symbols-outlined text-2xl">local_shipping</span>
             <span>Movimentações</span>
           </LinkMenu>
+
+          <LinkMenu to="/configuracoes">
+            <span className="material-symbols-outlined text-2xl">settings</span>
+            <span>Configurações</span>
+          </LinkMenu>
         </MenuLinks>
 
         {/* Rodapé com perfil do usuário logado */}
         <SecaoRodapeSidebar>
-          <PerfilInfo>
-            <AvatarPerfil>JM</AvatarPerfil>
-            <div>
-              <p className="font-semibold text-sm" style={{ color: 'var(--color-on-surface)' }}>
-                Jamilly Maia
-              </p>
-              <p className="text-xs" style={{ color: 'var(--color-on-surface-variant)' }}>
-                Administradora
-              </p>
-            </div>
-          </PerfilInfo>
+          <div className="flex flex-col gap-2">
+            <PerfilInfo>
+              <AvatarPerfil>{iniciais}</AvatarPerfil>
+              <div className="flex-1 overflow-hidden">
+                <p className="font-semibold text-sm truncate" style={{ color: 'var(--color-on-surface)' }}>
+                  {usuario?.nome || 'Usuário'}
+                </p>
+                <p className="text-xs truncate" style={{ color: 'var(--color-on-surface-variant)' }}>
+                  {usuario?.cargo || 'Administrador'}
+                </p>
+              </div>
+            </PerfilInfo>
+            <button
+              onClick={handleLogout}
+              className="flex items-center gap-2 text-sm text-[#ba1a1a] hover:bg-[#fff1f2] px-3 py-2 rounded-lg transition-colors w-full font-medium"
+            >
+              <span className="material-symbols-outlined text-[20px]">logout</span>
+              Sair da conta
+            </button>
+          </div>
         </SecaoRodapeSidebar>
       </SidebarContainer>
 
@@ -261,6 +286,21 @@ export const BarraNavegacao: React.FC = () => {
           <span className="material-symbols-outlined text-xl">local_shipping</span>
           <span>Movimentos</span>
         </LinkMenuMovel>
+
+        {/* Botão Configurações */}
+        <LinkMenuMovel to="/configuracoes">
+          <span className="material-symbols-outlined text-xl">settings</span>
+          <span>Config</span>
+        </LinkMenuMovel>
+
+        {/* Botão Sair */}
+        <button
+          onClick={handleLogout}
+          className="flex flex-col items-center justify-center gap-[0.2rem] text-[0.75rem] font-semibold text-[#ba1a1a] p-2 rounded-xl min-w-[3.5rem] transition-all"
+        >
+          <span className="material-symbols-outlined text-xl">logout</span>
+          <span>Sair</span>
+        </button>
       </BarraNavegacaoInferior>
     </>
   );
