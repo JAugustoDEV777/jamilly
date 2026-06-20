@@ -11,18 +11,27 @@ import styled from 'styled-components';
 /* Container em grade bento de 12 colunas para os cards de métricas */
 export const ContainerPainel = styled.div`
   display: grid;
-  grid-template-columns: repeat(12, 1fr);
-  gap: 1rem; /* Espaçamento menor em mobile */
+  grid-template-columns: repeat(auto-fit, minmax(clamp(280px, 90vw, 320px), 1fr));
+  gap: clamp(0.75rem, 2vw, 1.5rem);
   width: 100%;
 
-  /* Em tablet e acima, espaçamento maior */
-  @media (min-width: 640px) {
-    gap: 1.5rem;
+  /* Mobile (< 430px): 1 coluna */
+  @media (max-width: 430px) {
+    grid-template-columns: 1fr;
+  }
+
+  /* Tablet (430px - 768px): 2 colunas */
+  @media (min-width: 430px) and (max-width: 768px) {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  /* Desktop (> 1024px): 4 colunas */
+  @media (min-width: 1024px) {
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
   }
 `;
 
-/* Card individual de métricas rápidas
-   $tipoBorda: 'erro' = borda vermelha à esquerda, 'padrao' = borda normal */
+/* Card individual de métricas rápidas */
 export const CardMetrica = styled.div<{ $tipoBorda?: 'erro' | 'padrao' }>`
   background-color: var(--color-surface-container-lowest);
   border: 1px solid var(--color-outline-variant);
@@ -30,45 +39,37 @@ export const CardMetrica = styled.div<{ $tipoBorda?: 'erro' | 'padrao' }>`
     props.$tipoBorda === 'erro'
       ? '4px solid var(--color-error)'
       : '1px solid var(--color-outline-variant)'};
-  border-radius: 0.75rem;
-  padding: 1rem; /* Padding reduzido em mobile */
+  border-radius: 1rem;
+  padding: clamp(0.875rem, 3vw, 1.5rem);
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   transition: all 0.2s ease-in-out;
 
-  /* Padding maior em telas maiores */
-  @media (min-width: 640px) {
-    padding: 1.25rem;
-  }
-
-  /* Efeito de levitação suave ao passar o mouse */
   &:hover {
     transform: translateY(-2px);
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.08);
   }
+
+  /* Dark mode */
+  background-color: var(--color-surface-container-lowest);
 `;
 
-/* Rótulo superior em maiúsculas identificando a métrica */
+/* Rótulo superior em maiúsculas */
 export const RotuloCard = styled.p`
-  font-size: 0.7rem; /* Menor em mobile */
+  font-size: clamp(0.625rem, 2vw, 0.875rem);
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.05em;
   color: var(--color-on-surface-variant);
   opacity: 0.8;
-  margin-bottom: 0.25rem;
-
-  @media (min-width: 640px) {
-    font-size: 0.75rem;
-  }
+  margin: 0 0 0.5rem 0;
 `;
 
-/* Valor numérico em destaque dentro do card
-   $corValor: 'sucesso' = verde, 'erro' = vermelho, 'padrao' = cor padrão */
+/* Valor numérico em destaque */
 export const ValorCard = styled.h3<{ $corValor?: 'erro' | 'sucesso' | 'padrao' }>`
-  font-size: 1.5rem; /* Ajustado para caber melhor em alerts */
+  font-size: clamp(1.25rem, 5vw, 2.5rem);
   font-weight: 700;
   line-height: 1.2;
   margin: 0;
@@ -77,24 +78,15 @@ export const ValorCard = styled.h3<{ $corValor?: 'erro' | 'sucesso' | 'padrao' }
     if (props.$corValor === 'sucesso') return 'var(--color-secondary)';
     return 'var(--color-on-surface)';
   }};
-
-  /* Tamanho moderado em telas acima de tablet */
-  @media (min-width: 640px) {
-    font-size: 1.75rem;
-  }
-
-  @media (min-width: 1024px) {
-    font-size: 2rem;
-  }
 `;
 
-/* Indicador de tendência no rodapé do card (alta/baixa/neutro) */
+/* Indicador de tendência */
 export const IndicadorTendencia = styled.div<{ $tipoTendencia?: 'alta' | 'baixa' | 'neutro' }>`
-  margin-top: 0.5rem;
+  margin-top: 0.75rem;
   display: flex;
   align-items: center;
-  flex-wrap: wrap; /* Permite quebra em telas bem pequenas */
-  font-size: 0.8rem;
+  flex-wrap: wrap;
+  font-size: clamp(0.75rem, 2.5vw, 0.9375rem);
   font-weight: 500;
   color: ${props => {
     if (props.$tipoTendencia === 'alta') return 'var(--color-secondary)';

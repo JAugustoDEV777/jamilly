@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="pt-BR" class="light">
+<html lang="pt-BR">
   <head>
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
@@ -49,11 +49,32 @@
           }
         }
       }
+      
+      // Configuração de temas customizados para dark mode
+      const style = document.createElement('style');
+      style.textContent = `
+        html.dark {
+          --tw-text-opacity: 1;
+          color-scheme: dark;
+        }
+        
+        @media (prefers-color-scheme: dark) {
+          html:not(.light) {
+            color-scheme: dark;
+          }
+        }
+      `;
+      document.head.appendChild(style);
     </script>
     <style>
       body {
         background-color: #fcf8ff;
       }
+      
+      html.dark body {
+        background-color: #0f0f1a;
+      }
+      
       .material-symbols-outlined {
         font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
         display: inline-block;

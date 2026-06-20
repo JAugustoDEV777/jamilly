@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
+import { useTema } from '../context/TemaContext';
 
 interface UsuarioPerfil {
   id?: number;
@@ -9,19 +10,25 @@ interface UsuarioPerfil {
 }
 
 export const Configuracoes: React.FC = () => {
+  const { tema, mudarTema } = useTema();
   const [id, setId] = useState<number | null>(null);
   const [nome, setNome] = useState('');
   const [cargo, setCargo] = useState('');
   const [email, setEmail] = useState('');
   const [fotoPerfil, setFotoPerfil] = useState<string | null>(null);
-  const [tema, setTema] = useState<'claro' | 'escuro'>('claro');
-  const [idioma, setIdioma] = useState('pt-BR');
   const [salvando, setSalvando] = useState(false);
   const [erroSalvar, setErroSalvar] = useState('');
   
   const [senhaAtual, setSenhaAtual] = useState('');
   const [novaSenha, setNovaSenha] = useState('');
   const [confirmarSenha, setConfirmarSenha] = useState('');
+  
+  const [categorias, setCategorias] = useState<Array<{ id: number; nome: string }>>([]);
+  const [novaCategoria, setNovaCategoria] = useState('');
+  const [carregandoCategorias, setCarregandoCategorias] = useState(false);
+  const [erroCategoria, setErroCategoria] = useState('');
+  const [sucessoSalvar, setSucessoSalvar] = useState('');
+  
   const fileInputRef = useRef<HTMLInputElement | null>(null);
 
   useEffect(() => {
@@ -34,7 +41,29 @@ export const Configuracoes: React.FC = () => {
       setEmail(usuario.email || '');
       setFotoPerfil(usuario.foto || null);
     }
+    
+    // Carrega categorias do backend
+    carregarCategorias();
   }, []);
+
+  const carregarCategorias = async () => {
+    setCarregandoCategorias(true);
+    setErroCategoria('');
+    try {
+      const response = await fetch('/api/categorias');
+      if (response.ok) {
+        const dados = await response.json();
+        setCategorias(dados);
+      } else {
+        setErroCategoria('Erro ao carregar categorias');
+      }
+    } catch (error) {
+      console.error('Erro ao carregar categorias:', error);
+      setErroCategoria('Erro de conexão');
+    } finally {
+      setCarregandoCategorias(false);
+    }
+  };
 
   const carregarUsuario = () => {
     const usuarioRaw = localStorage.getItem('usuario');
@@ -48,6 +77,7 @@ export const Configuracoes: React.FC = () => {
 
   const handleSalvar = async () => {
     setErroSalvar('');
+    setSucessoSalvar('');
     if (!id) {
       setErroSalvar('Usuário inválido. Faça login novamente.');
       return;
@@ -76,7 +106,10 @@ export const Configuracoes: React.FC = () => {
 
       localStorage.setItem('usuario', JSON.stringify(data.user));
       carregarUsuario();
-      alert('Dados atualizados com sucesso.');
+      setSucessoSalvar('✓ Todas as alterações foram salvas com sucesso!');
+      
+      // Remove mensagem de sucesso após 3 segundos
+      setTimeout(() => setSucessoSalvar(''), 3000);
     } catch (error) {
       console.error(error);
       setErroSalvar('Erro de conexão ao salvar o perfil.');
@@ -86,7 +119,12 @@ export const Configuracoes: React.FC = () => {
   };
 
   const handleDescartar = () => {
+    setErroSalvar('');
+    setSucessoSalvar('');
+    setErroCategoria('');
     carregarUsuario();
+    carregarCategorias();
+    setNovaCategoria('');
   };
 
   const handleAlterarFoto = () => {
@@ -108,18 +146,49 @@ export const Configuracoes: React.FC = () => {
     setFotoPerfil(null);
   };
 
-  const [categorias, setCategorias] = useState(['Bebidas', 'Alimentos', 'Limpeza']);
-  const [novaCategoria, setNovaCategoria] = useState('');
+  const adicionarCategoria = async () => {
+    if (!novaCategoria.trim()) return;
 
-  const adicionarCategoria = () => {
-    if (novaCategoria.trim()) {
-      setCategorias([...categorias, novaCategoria.trim()]);
+    try {
+      setErroCategoria('');
+      const response = await fetch('/api/categorias', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ nome: novaCategoria.trim() }),
+      });
+
+      const data = await response.json();
+      if (!response.ok) {
+        setErroCategoria(data.error || 'Erro ao adicionar categoria');
+        return;
+      }
+
+      setCategorias([...categorias, data]);
       setNovaCategoria('');
+    } catch (error) {
+      console.error('Erro ao adicionar categoria:', error);
+      setErroCategoria('Erro de conexão');
     }
   };
 
-  const removerCategoria = (index: number) => {
-    setCategorias(categorias.filter((_, i) => i !== index));
+  const removerCategoria = async (categoriaId: number) => {
+    try {
+      setErroCategoria('');
+      const response = await fetch(`/api/categorias/${categoriaId}`, {
+        method: 'DELETE',
+      });
+
+      if (!response.ok) {
+        const data = await response.json();
+        setErroCategoria(data.error || 'Erro ao remover categoria');
+        return;
+      }
+
+      setCategorias(categorias.filter((cat) => cat.id !== categoriaId));
+    } catch (error) {
+      console.error('Erro ao remover categoria:', error);
+      setErroCategoria('Erro de conexão');
+    }
   };
 
   return (
@@ -256,7 +325,7 @@ export const Configuracoes: React.FC = () => {
             
             <div className="grid grid-cols-2 gap-3">
               <button
-                onClick={() => setTema('claro')}
+                onClick={() => mudarTema('claro')}
                 className={`flex flex-col items-center gap-3 px-6 py-5 rounded-xl font-bold text-sm transition-all active:scale-95 ${
                   tema === 'claro'
                     ? 'bg-[#3525cd] text-white shadow-lg'
@@ -267,7 +336,7 @@ export const Configuracoes: React.FC = () => {
                 <span>Claro</span>
               </button>
               <button
-                onClick={() => setTema('escuro')}
+                onClick={() => mudarTema('escuro')}
                 className={`flex flex-col items-center gap-3 px-6 py-5 rounded-xl font-bold text-sm transition-all active:scale-95 ${
                   tema === 'escuro'
                     ? 'bg-[#3525cd] text-white shadow-lg'
@@ -277,34 +346,6 @@ export const Configuracoes: React.FC = () => {
                 <span className="material-symbols-outlined text-3xl">dark_mode</span>
                 <span>Escuro</span>
               </button>
-            </div>
-          </div>
-
-          {/* Card: Preferências Regionais */}
-          <div className="bg-gradient-to-br from-white to-[#fcf8ff] border border-[#e8e5f1] rounded-2xl p-8 shadow-sm hover:shadow-md transition-all">
-            <div className="flex items-center gap-3 mb-8 pb-6 border-b border-[#dcd8e5]">
-              <div className="p-3 bg-[#3525cd]/10 rounded-xl">
-                <span className="material-symbols-outlined text-[#3525cd] text-xl">language</span>
-              </div>
-              <h2 className="text-xl font-bold text-on-surface">Preferências Regionais</h2>
-            </div>
-            
-            <div>
-              <label className="block text-xs font-bold text-on-surface-variant mb-2 ml-1 uppercase tracking-wide">Idioma</label>
-              <div className="relative">
-                <select
-                  value={idioma}
-                  onChange={(e) => setIdioma(e.target.value)}
-                  className="w-full appearance-none bg-white border border-[#dcd8e5] text-sm rounded-xl py-3 px-4 outline-none focus:border-[#3525cd] focus:ring-2 focus:ring-[#3525cd]/30 transition-all text-on-surface font-medium cursor-pointer hover:border-[#3525cd]"
-                >
-                  <option value="pt-BR">Português (Brasil) 🇧🇷</option>
-                  <option value="en-US">English (United States) 🇺🇸</option>
-                  <option value="es-ES">Español (España) 🇪🇸</option>
-                </select>
-                <span className="material-symbols-outlined absolute right-4 top-1/2 -translate-y-1/2 text-on-surface-variant pointer-events-none text-xl">
-                  expand_more
-                </span>
-              </div>
             </div>
           </div>
         </div>
@@ -370,14 +411,26 @@ export const Configuracoes: React.FC = () => {
               <h2 className="text-xl font-bold text-on-surface">Categorias do Estoque</h2>
             </div>
 
+            {erroCategoria && (
+              <div className="mb-4 rounded-xl bg-[#ffeded] border border-[#f5c2c7] text-[#ba1a1a] px-4 py-3 text-sm font-medium flex items-center gap-2">
+                <span className="material-symbols-outlined text-lg">error</span>
+                {erroCategoria}
+              </div>
+            )}
+
             <div className="space-y-3 mb-6">
-              {categorias.length > 0 ? (
-                categorias.map((cat, index) => (
-                  <div key={index} className="flex justify-between items-center bg-white border border-[#dcd8e5] py-3 px-4 rounded-xl hover:border-[#3525cd] hover:shadow-sm transition-all group">
-                    <span className="text-sm font-medium text-on-surface">{cat}</span>
+              {carregandoCategorias ? (
+                <div className="text-center py-6 text-on-surface-variant">
+                  <span className="material-symbols-outlined text-4xl animate-spin">progress_activity</span>
+                  <p className="text-sm mt-2">Carregando categorias...</p>
+                </div>
+              ) : categorias.length > 0 ? (
+                categorias.map((cat) => (
+                  <div key={cat.id} className="flex justify-between items-center bg-white border border-[#dcd8e5] py-3 px-4 rounded-xl hover:border-[#3525cd] hover:shadow-sm transition-all group dark:bg-[#222233] dark:border-[#333345]">
+                    <span className="text-sm font-medium text-on-surface dark:text-[#e8e5f0]">{cat.nome}</span>
                     <button
-                      onClick={() => removerCategoria(index)}
-                      className="text-on-surface-variant hover:text-[#ba1a1a] opacity-0 group-hover:opacity-100 transition-all flex items-center justify-center"
+                      onClick={() => removerCategoria(cat.id)}
+                      className="text-on-surface-variant hover:text-[#ba1a1a] opacity-0 group-hover:opacity-100 transition-all flex items-center justify-center dark:text-[#b3b0c3]"
                     >
                       <span className="material-symbols-outlined text-[20px]">delete</span>
                     </button>
@@ -385,14 +438,14 @@ export const Configuracoes: React.FC = () => {
                 ))
               ) : (
                 <div className="text-center py-6 text-on-surface-variant">
-                  <span className="material-symbols-outlined text-4xl mb-2">category</span>
-                  <p className="text-sm">Nenhuma categoria adicionada</p>
+                  <span className="material-symbols-outlined text-4xl mb-2 dark:text-[#49464f]">category</span>
+                  <p className="text-sm dark:text-[#b3b0c3]">Nenhuma categoria adicionada</p>
                 </div>
               )}
             </div>
 
             <div>
-              <label className="block text-xs font-bold text-on-surface-variant mb-2 ml-1 uppercase tracking-wide">Adicionar Categoria</label>
+              <label className="block text-xs font-bold text-on-surface-variant mb-2 ml-1 uppercase tracking-wide dark:text-[#b3b0c3]">Adicionar Categoria</label>
               <div className="flex gap-2">
                 <input
                   type="text"
@@ -400,14 +453,23 @@ export const Configuracoes: React.FC = () => {
                   onChange={(e) => setNovaCategoria(e.target.value)}
                   placeholder="Digite o nome da categoria"
                   onKeyDown={(e) => e.key === 'Enter' && adicionarCategoria()}
-                  className="flex-1 bg-white border border-[#dcd8e5] text-sm rounded-xl py-3 px-4 outline-none focus:border-[#3525cd] focus:ring-2 focus:ring-[#3525cd]/30 transition-all hover:border-[#3525cd]"
+                  className="flex-1 bg-white border border-[#dcd8e5] text-sm rounded-xl py-3 px-4 outline-none focus:border-[#3525cd] focus:ring-2 focus:ring-[#3525cd]/30 transition-all hover:border-[#3525cd] dark:bg-[#222233] dark:border-[#333345] dark:text-[#e8e5f0]"
                 />
                 <button
                   onClick={adicionarCategoria}
-                  className="bg-gradient-to-br from-[#3525cd] to-[#4d44e3] hover:shadow-lg text-white p-3 rounded-xl flex items-center justify-center transition-all shadow-md active:scale-95"
+                  disabled={carregandoCategorias || !novaCategoria.trim()}
+                  className={`p-3 rounded-xl flex items-center justify-center transition-all shadow-md active:scale-95 ${
+                    carregandoCategorias || !novaCategoria.trim()
+                      ? 'bg-[#dcd8e5] text-[#999] cursor-not-allowed'
+                      : 'bg-gradient-to-br from-[#3525cd] to-[#4d44e3] hover:shadow-lg text-white'
+                  }`}
                   title="Adicionar categoria"
                 >
-                  <span className="material-symbols-outlined text-xl">add</span>
+                  {carregandoCategorias ? (
+                    <span className="material-symbols-outlined text-xl animate-spin">progress_activity</span>
+                  ) : (
+                    <span className="material-symbols-outlined text-xl">add</span>
+                  )}
                 </button>
               </div>
             </div>
@@ -417,19 +479,25 @@ export const Configuracoes: React.FC = () => {
       </div>
 
       {/* ── BARRA DE AÇÕES INFERIOR ── */}
-      <div className="fixed bottom-0 left-0 right-0 bg-white border-t border-[#dcd8e5] shadow-lg md:static md:shadow-none md:border-t md:bg-transparent md:border-[#dcd8e5]">
+      <div className="fixed bottom-0 left-0 right-0 bg-white border-t border-[#dcd8e5] shadow-lg md:static md:shadow-none md:border-t md:bg-transparent md:border-[#dcd8e5] dark:bg-[#161620] dark:border-[#333345]">
         <div className="w-full max-w-[1400px] mx-auto p-4 sm:p-6 md:p-0">
+          {sucessoSalvar ? (
+            <div className="mb-4 rounded-xl bg-[#f0f8f4] border border-[#a8d5ba] text-[#006c49] px-5 py-4 text-sm font-medium flex items-center gap-2 animate-in fade-in duration-300">
+              <span className="material-symbols-outlined text-lg">check_circle</span>
+              {sucessoSalvar}
+            </div>
+          ) : null}
           {erroSalvar ? (
             <div className="mb-4 rounded-xl bg-[#ffeded] border border-[#f5c2c7] text-[#ba1a1a] px-5 py-4 text-sm font-medium flex items-center gap-2">
               <span className="material-symbols-outlined text-lg">error</span>
               {erroSalvar}
             </div>
           ) : null}
-          <div className="pt-6 md:pt-6 md:border-t md:border-[#dcd8e5] flex flex-col-reverse sm:flex-row justify-end items-center gap-3 md:gap-4">
+          <div className="pt-6 md:pt-6 md:border-t md:border-[#dcd8e5] dark:md:border-[#333345] flex flex-col-reverse sm:flex-row justify-end items-center gap-3 md:gap-4">
             <button
               type="button"
               onClick={handleDescartar}
-              className="w-full sm:w-auto px-6 py-3 rounded-xl font-bold text-sm text-on-surface-variant hover:bg-[#f5f2ff] hover:text-[#3525cd] border border-[#dcd8e5] transition-all active:scale-95"
+              className="w-full sm:w-auto px-6 py-3 rounded-xl font-bold text-sm text-on-surface-variant hover:bg-[#f5f2ff] hover:text-[#3525cd] border border-[#dcd8e5] transition-all active:scale-95 dark:border-[#333345] dark:text-[#b3b0c3] dark:hover:bg-[#28283a] dark:hover:text-[#6f5ffd]"
             >
               Descartar Alterações
             </button>
@@ -439,8 +507,8 @@ export const Configuracoes: React.FC = () => {
               disabled={salvando}
               className={`w-full sm:w-auto px-8 py-3 rounded-xl font-bold text-sm transition-all shadow-md hover:shadow-lg active:scale-95 flex items-center justify-center gap-2 ${
                 salvando
-                  ? 'bg-[#dcd8e5] text-[#777587] cursor-not-allowed'
-                  : 'bg-gradient-to-br from-[#3525cd] to-[#4d44e3] text-white hover:shadow-lg'
+                  ? 'bg-[#dcd8e5] text-[#777587] cursor-not-allowed dark:bg-[#333345] dark:text-[#666]'
+                  : 'bg-gradient-to-br from-[#3525cd] to-[#4d44e3] text-white hover:shadow-lg dark:from-[#6f5ffd] dark:to-[#5844d6]'
               }`}
             >
               {salvando ? (

@@ -14,20 +14,20 @@ const BotaoBase = styled.button`
   justify-content: center;
   gap: 0.5rem;
   font-weight: 600;
-  font-family: inherit; /* Herda a fonte Inter do body */
-  border-radius: 0.5rem;
+  font-family: inherit;
+  border-radius: 0.75rem;
   transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
   cursor: pointer;
-  /* Área de toque mínima recomendada para mobile (WCAG 2.5.5) */
-  min-height: 40px;
-  white-space: nowrap; /* Evita quebra de texto dentro do botão */
+  /* Área de toque mínima: 44x44px em mobile, flexível em desktop */
+  min-height: clamp(44px, 11vw, 48px);
+  min-width: clamp(44px, 11vw, 48px);
+  font-size: clamp(0.8125rem, 2.5vw, 1rem);
+  white-space: nowrap;
 
-  /* Animação de "pressionar" ao clicar — feedback tátil visual */
   &:active {
     transform: scale(0.96);
   }
 
-  /* Estado desabilitado: opacidade reduzida e cursor proibido */
   &:disabled {
     opacity: 0.5;
     cursor: not-allowed;
@@ -35,66 +35,50 @@ const BotaoBase = styled.button`
   }
 `;
 
-/* ─────────────────────────────────────────
-   BOTÃO PRIMÁRIO — Ação principal da tela
-   Cor: roxo/índigo da marca (#3525cd)
-   Uso: "Salvar Produto", "Confirmar Entrada"
-   ───────────────────────────────────────── */
+/* BOTÃO PRIMÁRIO */
 const BotaoPrimarioEstilizado = styled(BotaoBase)`
   background-color: var(--color-primary);
   color: var(--color-on-primary);
   border: 1px solid transparent;
-  padding: 0.5rem 1rem; /* Compacto em mobile */
+  padding: clamp(0.5rem, 2vw, 0.875rem) clamp(0.75rem, 3vw, 1.5rem);
   box-shadow: 0 4px 6px -1px rgba(79, 70, 229, 0.2);
 
-  /* Padding maior em desktop */
-  @media (min-width: 640px) {
-    padding: 0.625rem 1.25rem;
-  }
-
-  /* Hover: fundo levemente mais claro + sombra aumentada */
   &:hover:not(:disabled) {
     background-color: var(--color-primary-container);
     box-shadow: 0 10px 15px -3px rgba(79, 70, 229, 0.3);
   }
+
+  @media (max-width: 430px) {
+    width: 100%;
+  }
 `;
 
-/* ─────────────────────────────────────────
-   BOTÃO SECUNDÁRIO — Ação alternativa / cancelar
-   Visual: contorno sutil, sem preenchimento
-   Uso: "Cancelar", ações destrutivas secundárias
-   ───────────────────────────────────────── */
+/* BOTÃO SECUNDÁRIO */
 const BotaoSecundarioEstilizado = styled(BotaoBase)`
   background-color: var(--color-surface-container-lowest);
   color: var(--color-on-surface-variant);
   border: 1px solid var(--color-outline-variant);
-  padding: 0.5rem 1rem;
+  padding: clamp(0.5rem, 2vw, 0.875rem) clamp(0.75rem, 3vw, 1.5rem);
 
-  @media (min-width: 640px) {
-    padding: 0.625rem 1.25rem;
-  }
-
-  /* Hover: fundo levemente acinzentado */
   &:hover:not(:disabled) {
     background-color: var(--color-surface-container-low);
     color: var(--color-on-surface);
   }
+
+  @media (max-width: 430px) {
+    width: 100%;
+  }
 `;
 
-/* ─────────────────────────────────────────
-   BOTÃO EXCLUIR — Ação destrutiva (vermelho)
-   Visual: ícone circular com borda vermelha
-   Uso: Excluir produto da tabela
-   ───────────────────────────────────────── */
+/* BOTÃO EXCLUIR */
 const BotaoExcluirEstilizado = styled(BotaoBase)`
   background-color: transparent;
   color: var(--color-error);
   border: 1px solid rgba(186, 26, 26, 0.2);
-  /* Circular com padding uniforme para ícone */
-  padding: 0.375rem; /* Menor em mobile */
+  padding: 0.375rem;
   border-radius: 9999px;
-  min-height: 36px;
-  min-width: 36px;
+  min-height: 40px;
+  min-width: 40px;
 
   @media (min-width: 640px) {
     padding: 0.5rem;

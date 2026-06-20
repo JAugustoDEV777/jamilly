@@ -42,41 +42,41 @@ export const Login: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen flex bg-[#fcf8ff] font-sans text-on-surface">
-      {/* Lado Esquerdo - Formulário */}
-      <div className="flex-1 flex flex-col justify-center px-8 sm:px-16 lg:px-24">
+    <div className="min-h-screen flex flex-col lg:flex-row bg-[#fcf8ff] font-sans text-on-surface dark:bg-[#0f0f1a]">
+      {/* Lado Esquerdo - Formulário (mobile-first, full width em mobile) */}
+      <div className="flex-1 flex flex-col justify-center px-4 sm:px-8 lg:px-24 py-8 lg:py-0">
         <div className="w-full max-w-md mx-auto">
           {/* Logo */}
-          <div className="flex items-center gap-3 mb-10">
-            <div className="bg-[#3525cd] text-white p-2 rounded-xl flex items-center justify-center shadow-md">
-              <span className="material-symbols-outlined text-2xl">inventory_2</span>
+          <div className="flex items-center gap-3 mb-8 sm:mb-10">
+            <div className="bg-[#3525cd] text-white p-2 rounded-xl flex items-center justify-center shadow-md dark:bg-[#6f5ffd]">
+              <span className="material-symbols-outlined text-xl sm:text-2xl">inventory_2</span>
             </div>
             <div>
-              <h1 className="text-[#3525cd] text-2xl font-black tracking-tight leading-none uppercase">Depósito</h1>
-              <p className="text-xs text-on-surface-variant font-medium mt-0.5">Gestão de Inventário Inteligente</p>
+              <h1 className="text-[#3525cd] text-xl sm:text-2xl font-black tracking-tight leading-none uppercase dark:text-[#6f5ffd]">Depósito</h1>
+              <p className="text-xs text-on-surface-variant font-medium mt-0.5 dark:text-[#b3b0c3]">Gestão de Inventário Inteligente</p>
             </div>
           </div>
 
           {/* Cabeçalho do Login */}
-          <div className="mb-8">
-            <h2 className="text-3xl font-extrabold mb-2 text-on-surface">Bem-vindo de volta</h2>
-            <p className="text-sm text-on-surface-variant">Insira suas credenciais para acessar o painel de controle.</p>
+          <div className="mb-6 sm:mb-8">
+            <h2 className="text-2xl sm:text-3xl font-extrabold mb-2 text-on-surface dark:text-[#e8e5f0]">Bem-vindo de volta</h2>
+            <p className="text-sm text-on-surface-variant dark:text-[#b3b0c3]">Insira suas credenciais para acessar o painel de controle.</p>
           </div>
 
           {/* Formulário */}
-          <form onSubmit={handleLogin} className="space-y-5">
+          <form onSubmit={handleLogin} className="space-y-4 sm:space-y-5">
             {erro && (
-              <div className="bg-[#ffdad6] text-[#ba1a1a] p-3 rounded-xl text-sm font-medium flex items-center gap-2">
-                <span className="material-symbols-outlined text-[18px]">error</span>
-                {erro}
+              <div className="bg-[#ffdad6] dark:bg-[#ba1a1a] text-[#ba1a1a] dark:text-[#ffb4a0] p-3 sm:p-4 rounded-xl text-sm font-medium flex items-center gap-2">
+                <span className="material-symbols-outlined text-[18px] flex-shrink-0">error</span>
+                <span>{erro}</span>
               </div>
             )}
 
             {/* Campo Nome de usuário */}
             <div>
-              <label className="block text-xs font-bold text-on-surface-variant mb-1.5 ml-1">Nome de usuário</label>
+              <label className="block text-xs font-bold text-on-surface-variant mb-1.5 ml-1 dark:text-[#b3b0c3]">Nome de usuário</label>
               <div className="relative flex items-center">
-                <span className="material-symbols-outlined absolute left-3.5 text-on-surface-variant text-[20px]">person</span>
+                <span className="material-symbols-outlined absolute left-3 text-on-surface-variant text-[18px] dark:text-[#b3b0c3] pointer-events-none">person</span>
                 <input
                   type="text"
                   value={nomeUsuario}

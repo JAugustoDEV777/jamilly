@@ -12,89 +12,85 @@ import styled from 'styled-components';
 /* Wrapper da tabela com overflow-x para scroll horizontal em mobile */
 export const ContainerTabela = styled.div`
   width: 100%;
-  overflow-x: auto; /* Scroll horizontal em telas menores */
-  -webkit-overflow-scrolling: touch; /* Scroll suave em iOS */
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
   border-radius: 0.75rem;
   border: 1px solid var(--color-outline-variant);
   background-color: var(--color-surface-container-lowest);
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
 `;
 
-/* Tabela principal com layout de largura mínima para não quebrar em mobile */
+/* Tabela principal */
 export const TabelaDados = styled.table`
   width: 100%;
-  min-width: 600px; /* Garante que as colunas não colapem em telas pequenas */
+  min-width: 600px;
   border-collapse: collapse;
   text-align: left;
 `;
 
-/* Linha do cabeçalho da tabela */
+/* Linha do cabeçalho */
 export const LinhaCabecalho = styled.tr`
   border-bottom: 1px solid var(--color-outline-variant);
   background-color: var(--color-surface-container-low);
 `;
 
-/* Célula do cabeçalho com padding adaptado para mobile */
+/* Célula do cabeçalho */
 export const CelulaCabecalho = styled.th`
-  padding: 0.75rem 1rem; /* Menor em mobile */
-  font-size: 0.7rem;
+  padding: clamp(0.5rem, 2vw, 1rem) clamp(0.625rem, 2vw, 1.5rem);
+  font-size: clamp(0.65rem, 2vw, 0.875rem);
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.05em;
   color: var(--color-on-surface-variant);
 
-  /* Padding maior em desktop */
-  @media (min-width: 768px) {
-    padding: 1rem 1.5rem;
-    font-size: 0.75rem;
+  @media (max-width: 430px) {
+    padding: 0.5rem 0.625rem;
+    font-size: 0.65rem;
   }
 `;
 
-/* Linha de dados com cores alternadas e efeito hover */
+/* Linha de dados */
 export const LinhaDados = styled.tr`
   border-bottom: 1px solid rgba(199, 196, 216, 0.3);
   transition: background-color 0.15s ease-in-out;
 
-  /* Linhas ímpares (zebra striping claro) */
   &:nth-child(odd) {
     background-color: var(--color-surface-container-lowest);
   }
 
-  /* Linhas pares */
   &:nth-child(even) {
     background-color: var(--color-surface-container-low);
   }
 
-  /* Destaque ao passar o mouse */
   &:hover {
     background-color: var(--color-surface-container);
   }
 `;
 
-/* Célula de dados com padding adaptável */
+/* Célula de dados */
 export const CelulaDados = styled.td`
-  padding: 0.75rem 1rem; /* Compacto em mobile */
-  font-size: 0.875rem;
+  padding: clamp(0.5rem, 2vw, 1rem) clamp(0.625rem, 2vw, 1.5rem);
+  font-size: clamp(0.8125rem, 2.5vw, 0.9375rem);
   color: var(--color-on-surface);
   vertical-align: middle;
 
-  @media (min-width: 768px) {
-    padding: 1rem 1.5rem;
-    font-size: 0.9375rem;
+  @media (max-width: 430px) {
+    padding: 0.625rem 0.625rem;
+    font-size: 0.8125rem;
   }
 `;
 
-/* Container da barra de progresso de estoque (fundo cinza) */
+/* Container da barra de progresso */
 export const ContainerBarraProgresso = styled.div`
   width: 100%;
-  max-width: 120px; /* Menor em mobile */
+  max-width: clamp(80px, 20vw, 160px);
   height: 6px;
   background-color: var(--color-surface-container-highest);
   border-radius: 9999px;
   overflow: hidden;
 
-  @media (min-width: 768px) {
-    max-width: 160px;
+  @media (max-width: 430px) {
+    max-width: 80px;
   }
 `;
 

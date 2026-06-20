@@ -274,4 +274,78 @@ app.put('/api/auth/profile', async (req: Request, res: Response) => {
   }
 })
 
+// ========== ENDPOINTS DE CATEGORIAS ==========
+app.get('/api/categorias', async (req: Request, res: Response) => {
+  try {
+    const categorias = await prisma.categoria.findMany({
+      orderBy: { nome: 'asc' },
+    })
+    res.json(categorias)
+  } catch (error) {
+    console.error('Erro ao buscar categorias:', error)
+    res.status(500).json({ error: 'Erro ao buscar categorias' })
+  }
+})
+
+app.post('/api/categorias', async (req: Request, res: Response) => {
+  const { nome } = req.body
+
+  if (!nome || !nome.trim()) {
+    res.status(400).json({ error: 'Nome da categoria é obrigatório' })
+    return
+  }
+
+  try {
+    const categoriaExistente = await prisma.categoria.findFirst({
+      where: { nome: nome.trim() },
+    })
+
+    if (categoriaExistente) {
+      res.status(400).json({ error: 'Esta categoria já existe' })
+      return
+    }
+
+    const categoria = await prisma.categoria.create({
+      data: { nome: nome.trim() },
+    })
+
+    res.status(201).json(categoria)
+  } catch (error) {
+    console.error('Erro ao criar categoria:', error)
+    res.status(500).json({ error: 'Erro ao criar categoria' })
+  }
+})
+
+app.delete('/api/categorias/:id', async (req: Request, res: Response) => {
+  const id = Number(req.params.id)
+
+  if (isNaN(id)) {
+    res.status(400).json({ error: 'ID inválido' })
+    return
+  }
+
+  try {
+    // Verifica se a categoria tem produtos associados
+    const produtosAssociados = await prisma.produto.count({
+      where: { categoriaId: id },
+    })
+
+    if (produtosAssociados > 0) {
+      res.status(400).json({ 
+        error: `Não é possível deletar esta categoria. Existem ${produtosAssociados} produto(s) associado(s).` 
+      })
+      return
+    }
+
+    await prisma.categoria.delete({
+      where: { id },
+    })
+
+    res.status(204).send()
+  } catch (error) {
+    console.error('Erro ao deletar categoria:', error)
+    res.status(500).json({ error: 'Erro ao deletar categoria' })
+  }
+})
+
 export default app
