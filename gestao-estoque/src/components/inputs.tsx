@@ -120,32 +120,13 @@ const SelectEstilizado = styled.select`
   }
 `;
 
-/* Container do campo monetário com prefixo "R$" absoluto */
+/* Container do campo monetário */
 const WrapperMonetario = styled.div`
-  position: relative;
   width: 100%;
-  display: flex;
-  align-items: center;
 `;
 
-/* Label "R$" posicionado dentro do input à esquerda */
-const PrefixoMonetario = styled.span`
-  position: absolute;
-  left: 0.625rem;
-  top: 50%;
-  transform: translateY(-50%);
-  font-size: 0.8125rem;
-  font-weight: 600;
-  color: var(--color-on-surface-variant);
-  opacity: 0.7;
-  pointer-events: none; /* Não intercepta cliques no input */
-  user-select: none;
-`;
-
-/* Input monetário com padding esquerdo extra para o prefixo "R$" */
-const InputMonetarioEstilizado = styled(InputEstilizado)`
-  padding-left: 2rem; /* Espaço reservado para o "R$" */
-`;
+/* Input monetário reutiliza o padding padrão */
+const InputMonetarioEstilizado = styled(InputEstilizado)``;
 
 /* ── INTERFACES DE PROPRIEDADES ── */
 
@@ -204,7 +185,7 @@ export const CampoSelecao: React.FC<PropriedadesCampoSelecao> = ({
   );
 };
 
-/* 4. Campo de entrada monetária com prefixo "R$" integrado */
+/* 4. Campo de entrada monetária sem prefixo "R$" dentro do input */
 export const CampoMonetario: React.FC<PropriedadesCampoTexto> = ({
   rotulo,
   ...outrasProps
@@ -213,8 +194,6 @@ export const CampoMonetario: React.FC<PropriedadesCampoTexto> = ({
     <WrapperCampo>
       <RotuloCampo>{rotulo}</RotuloCampo>
       <WrapperMonetario>
-        {/* Prefixo visual de moeda — não é parte do valor do input */}
-        <PrefixoMonetario>R$</PrefixoMonetario>
         <InputMonetarioEstilizado
           type="text"
           inputMode="decimal" /* Abre teclado com vírgula/ponto em mobile */

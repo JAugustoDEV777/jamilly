@@ -451,7 +451,7 @@ export const Movimentacoes: React.FC = () => {
                 onChange={(e) => definirSaidaMotivoLucro(e.target.value)}
               />
               <CampoMonetario
-                rotulo="Valor do Produto (R$)"
+                rotulo="Valor do Produto"
                 value={saidaLucroManual}
                 onChange={(e) => definirSaidaLucroManual(e.target.value)}
                 required
@@ -470,18 +470,15 @@ export const Movimentacoes: React.FC = () => {
                 </label>
                 {saidaAdicionarJuros && (
                   <div className="pl-6">
-                    <label className="text-xs font-medium text-on-surface-variant">Valor da Taxa (R$)</label>
-                    <div className="flex items-center mt-1 bg-white border border-[#c7c4d8]/60 rounded-lg overflow-hidden">
-                      <span className="px-3 py-2 text-sm font-bold text-on-surface-variant bg-[#f0ecf9] border-r border-[#c7c4d8]/60">R$</span>
-                      <input
-                        type="text"
-                        inputMode="decimal"
-                        className="flex-1 px-3 py-2 text-sm outline-none bg-transparent"
-                        placeholder="0,00"
-                        value={taxaManualValor}
-                        onChange={(e) => definirTaxaManualValor(e.target.value)}
-                      />
-                    </div>
+                    <label className="text-xs font-medium text-on-surface-variant">Valor da Taxa</label>
+                    <input
+                      type="text"
+                      inputMode="decimal"
+                      className="w-full mt-1 px-3 py-2 text-sm bg-white border border-[#c7c4d8]/60 rounded-lg outline-none"
+                      placeholder="0,00"
+                      value={taxaManualValor}
+                      onChange={(e) => definirTaxaManualValor(e.target.value)}
+                    />
                   </div>
                 )}
               </div>
@@ -795,18 +792,15 @@ export const Movimentacoes: React.FC = () => {
                       </label>
                       {saidaAdicionarJuros && (
                         <div className="pl-6">
-                          <label className="text-xs font-medium text-on-surface-variant">Valor da Taxa (R$)</label>
-                          <div className="flex items-center mt-1 bg-white border border-[#c7c4d8]/60 rounded-lg overflow-hidden">
-                            <span className="px-3 py-2 text-sm font-bold text-on-surface-variant bg-[#f0ecf9] border-r border-[#c7c4d8]/60">R$</span>
-                            <input
-                              type="text"
-                              inputMode="decimal"
-                              className="flex-1 px-3 py-2 text-sm outline-none bg-transparent"
-                              placeholder="0,00"
-                              value={saidaValorTaxa}
-                              onChange={(e) => definirSaidaValorTaxa(e.target.value)}
-                            />
-                          </div>
+                          <label className="text-xs font-medium text-on-surface-variant">Valor da Taxa</label>
+                          <input
+                            type="text"
+                            inputMode="decimal"
+                            className="w-full mt-1 px-3 py-2 text-sm bg-white border border-[#c7c4d8]/60 rounded-lg outline-none"
+                            placeholder="0,00"
+                            value={saidaValorTaxa}
+                            onChange={(e) => definirSaidaValorTaxa(e.target.value)}
+                          />
                         </div>
                       )}
                     </div>
