@@ -132,6 +132,8 @@ const WrapperMonetario = styled.div`
 const PrefixoMonetario = styled.span`
   position: absolute;
   left: 0.625rem;
+  top: 50%;
+  transform: translateY(-50%);
   font-size: 0.8125rem;
   font-weight: 600;
   color: var(--color-on-surface-variant);

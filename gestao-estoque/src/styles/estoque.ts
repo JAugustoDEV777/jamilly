@@ -36,16 +36,16 @@ export const LinhaCabecalho = styled.tr`
 
 /* Célula do cabeçalho */
 export const CelulaCabecalho = styled.th`
-  padding: clamp(0.5rem, 2vw, 1rem) clamp(0.625rem, 2vw, 1.5rem);
-  font-size: clamp(0.65rem, 2vw, 0.875rem);
+  padding: clamp(0.35rem, 1.5vw, 1rem) clamp(0.5rem, 1.5vw, 1.5rem);
+  font-size: clamp(0.6rem, 1.5vw, 0.875rem);
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.05em;
   color: var(--color-on-surface-variant);
 
   @media (max-width: 430px) {
-    padding: 0.5rem 0.625rem;
-    font-size: 0.65rem;
+    padding: 0.35rem 0.5rem;
+    font-size: 0.6rem;
   }
 `;
 
@@ -69,14 +69,14 @@ export const LinhaDados = styled.tr`
 
 /* Célula de dados */
 export const CelulaDados = styled.td`
-  padding: clamp(0.5rem, 2vw, 1rem) clamp(0.625rem, 2vw, 1.5rem);
-  font-size: clamp(0.8125rem, 2.5vw, 0.9375rem);
+  padding: clamp(0.35rem, 1.5vw, 1rem) clamp(0.5rem, 1.5vw, 1.5rem);
+  font-size: clamp(0.75rem, 2vw, 0.9375rem);
   color: var(--color-on-surface);
   vertical-align: middle;
 
   @media (max-width: 430px) {
-    padding: 0.625rem 0.625rem;
-    font-size: 0.8125rem;
+    padding: 0.35rem 0.5rem;
+    font-size: 0.75rem;
   }
 `;
 
@@ -238,5 +238,9 @@ export const JanelaModal = styled.div`
 export const SecaoFormulario = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 1rem;
+  gap: 0.75rem;
+
+  @media (min-width: 640px) {
+    gap: 1rem;
+  }
 `;

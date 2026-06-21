@@ -31,14 +31,19 @@ export const LinhaVertical = styled.div`
 /* Item individual da timeline */
 export const ItemLinhaTempo = styled.div`
   display: flex;
-  gap: 0.75rem; /* Espaço menor entre ícone e conteúdo em mobile */
-  padding: 0.875rem; /* Padding compacto em mobile */
+  gap: 0.5rem; /* Espaço menor entre ícone e conteúdo em mobile */
+  padding: 0.625rem; /* Padding compacto em mobile */
   position: relative;
   transition: background-color 0.2s ease;
   border-radius: 1rem;
 
   /* Mais espaço em telas maiores */
   @media (min-width: 640px) {
+    gap: 0.75rem;
+    padding: 0.875rem;
+  }
+
+  @media (min-width: 1024px) {
     gap: 1rem;
     padding: 1.25rem;
   }
@@ -56,16 +61,16 @@ export const ItemLinhaTempo = styled.div`
 
 /* Ícone circular indicador de fluxo (entrada = azul, saída = verde) */
 export const IconeFluxo = styled.div<{ $tipo: 'entrada' | 'saida' }>`
-  width: 2.25rem; /* Ligeiramente menor em mobile */
-  height: 2.25rem;
-  min-width: 2.25rem; /* Evita que o ícone encolha com flex */
+  width: 2rem; /* Ligeiramente menor em mobile */
+  height: 2rem;
+  min-width: 2rem; /* Evita que o ícone encolha com flex */
   border-radius: 9999px;
   display: flex;
   align-items: center;
   justify-content: center;
   z-index: 10;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-  font-size: 1rem; /* Ícone menor em mobile */
+  font-size: 0.9rem; /* Ícone menor em mobile */
 
   /* Entrada = azul primário | Saída = verde secundário */
   background-color: ${props =>
@@ -78,6 +83,13 @@ export const IconeFluxo = styled.div<{ $tipo: 'entrada' | 'saida' }>`
       : 'var(--color-on-secondary-container)'};
 
   @media (min-width: 640px) {
+    width: 2.25rem;
+    height: 2.25rem;
+    min-width: 2.25rem;
+    font-size: 1rem;
+  }
+
+  @media (min-width: 1024px) {
     width: 2.5rem;
     height: 2.5rem;
     min-width: 2.5rem;
@@ -122,8 +134,8 @@ export const BarraAcoesFlutuante = styled.div<{ $inline?: boolean }>`
   display: flex;
   align-items: center;
   flex-wrap: wrap;
-  gap: 0.5rem; /* Espaçamento reduzido em mobile */
-  padding: 0.625rem 1rem; /* Padding compacto em mobile */
+  gap: 0.375rem; /* Espaçamento reduzido em mobile */
+  padding: 0.5rem 0.75rem; /* Padding compacto em mobile */
   border-radius: 9999px;
   z-index: 49; /* Abaixo do z-index 50 da navbar */
   width: max-content;
@@ -134,11 +146,18 @@ export const BarraAcoesFlutuante = styled.div<{ $inline?: boolean }>`
      com o card de filtros. */
   ${(p) =>
     p.$inline
-      ? `position: static; transform: none; left: auto; bottom: auto; display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); justify-items: stretch; align-items: center; background: rgba(245, 242, 255, 0.85); color: var(--color-on-surface); box-shadow: none; border: 1px solid rgba(199, 196, 216, 0.25); padding: 0.85rem; gap: 0.75rem; width: 100%; max-width: none; margin-top: 0.75rem; border-radius: 1.5rem;`
-      : `position: fixed; bottom: 5.5rem; left: 50%; transform: translateX(-50%); background-color: var(--color-on-surface); color: var(--color-background); box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.3);`}
+      ? `position: static; transform: none; left: auto; bottom: auto; display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); justify-items: stretch; align-items: center; background: rgba(245, 242, 255, 0.85); color: var(--color-on-surface); box-shadow: none; border: 1px solid rgba(199, 196, 216, 0.25); padding: 0.625rem; gap: 0.5rem; width: 100%; max-width: none; margin-top: 0.5rem; border-radius: 1.5rem;`
+      : `position: fixed; bottom: 4rem; left: 50%; transform: translateX(-50%); background-color: var(--color-on-surface); color: var(--color-background); box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.3);`}
 
   /* Em desktop: ajuste de espaçamento quando flutuante */
   @media (min-width: 769px) {
+    ${(p) =>
+      p.$inline
+        ? `gap: 0.75rem; padding: 0; margin-top: 0.5rem; justify-content: flex-end;`
+        : `bottom: 2rem; gap: 0.75rem; padding: 0.625rem 1.25rem; max-width: none;`}
+  }
+
+  @media (min-width: 1024px) {
     ${(p) =>
       p.$inline
         ? `gap: 1rem; padding: 0; margin-top: 0.5rem; justify-content: flex-end;`

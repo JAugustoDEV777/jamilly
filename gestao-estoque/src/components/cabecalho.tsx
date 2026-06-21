@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useLocation } from 'react-router-dom';
 import { useEstoque } from '../context/EstoqueContext';
 import styled from 'styled-components';
 
@@ -197,6 +198,11 @@ export const Cabecalho: React.FC = () => {
   const { produtos, movimentacoes } = useEstoque();
   const [exibirNotificacoes, definirExibirNotificacoes] = useState(false);
   const [exibirHistorico, definirExibirHistorico] = useState(false);
+  const { pathname } = useLocation();
+
+  /* Páginas onde o elemento circulado deve aparecer em mobile */
+  const paginasComElementoMobile = ['/dashboard', '/estoque', '/movimentacoes', '/configuracoes'];
+  const deveMostrarEmMobile = paginasComElementoMobile.some(rota => pathname.includes(rota));
 
   /* ── PRODUTOS COM ESTOQUE BAIXO ── */
   const produtosCriticos = produtos.filter(p => p.quantidade <= p.estoqueMinimo).sort((a, b) => a.quantidade - b.quantidade);
@@ -206,10 +212,19 @@ export const Cabecalho: React.FC = () => {
 
   return (
     <>
-      <header style={{ paddingTop: 'env(safe-area-inset-top)' }} className="sticky top-0 z-40 flex justify-between items-center w-full px-4 sm:px-6 md:px-10 h-16 md:h-20 bg-[#fcf8ff]/80 backdrop-blur-md border-b border-[#c7c4d8]/40">
+      <header style={{ paddingTop: 'env(safe-area-inset-top)' }} className="sticky top-0 z-40 flex justify-between items-center w-full px-3 sm:px-6 md:px-10 h-14 sm:h-16 md:h-20 bg-[#fcf8ff]/80 backdrop-blur-md border-b border-[#c7c4d8]/40">
 
         {/* Campo de busca global — oculto em mobile para economizar espaço */}
         <div className="flex items-center gap-4 flex-1">
+          {/* Elemento circulado que aparece APENAS EM MOBILE nas páginas específicas */}
+          {deveMostrarEmMobile && (
+            <div className="sm:hidden flex items-center gap-2">
+              <button className="p-2 text-[#464555] hover:bg-[#eae6f4] rounded-full transition-transform active:scale-90">
+                <span className="material-symbols-outlined text-xl">search</span>
+              </button>
+            </div>
+          )}
+
           <div className="relative w-full max-w-md hidden sm:block">
             <span className="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-[#777587]">
               search

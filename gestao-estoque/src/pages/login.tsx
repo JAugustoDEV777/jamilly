@@ -76,7 +76,7 @@ export const Login: React.FC = () => {
             <div>
               <label className="block text-xs font-bold text-on-surface-variant mb-1.5 ml-1 dark:text-[var(--color-on-surface-variant)]">Nome de usuário</label>
               <div className="relative flex items-center">
-                <span className="material-symbols-outlined absolute left-3 text-on-surface-variant text-[18px] dark:text-[var(--color-on-surface-variant)] pointer-events-none">person</span>
+                <span className="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant text-[18px] dark:text-[var(--color-on-surface-variant)] pointer-events-none">person</span>
                 <input
                   type="text"
                   value={nomeUsuario}
@@ -95,7 +95,7 @@ export const Login: React.FC = () => {
                 <a href="#" className="text-xs font-bold text-[#3525cd] hover:underline">Esqueci minha senha</a>
               </div>
               <div className="relative flex items-center">
-                <span className="material-symbols-outlined absolute left-3.5 text-on-surface-variant text-[20px]">lock</span>
+                <span className="material-symbols-outlined absolute left-3.5 top-1/2 -translate-y-1/2 text-on-surface-variant text-[20px]">lock</span>
                 <input
                   type={mostrarSenha ? "text" : "password"}
                   value={senha}
@@ -107,7 +107,7 @@ export const Login: React.FC = () => {
                 <button
                   type="button"
                   onClick={() => setMostrarSenha(!mostrarSenha)}
-                  className="absolute right-3.5 text-on-surface-variant hover:text-on-surface transition-colors flex items-center justify-center"
+                  className="absolute right-3.5 top-1/2 -translate-y-1/2 text-on-surface-variant hover:text-on-surface transition-colors flex items-center justify-center"
                 >
                   <span className="material-symbols-outlined text-[20px]">
                     {mostrarSenha ? 'visibility_off' : 'visibility'}

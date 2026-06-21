@@ -80,17 +80,17 @@ export const Dashboard: React.FC = () => {
 
   /* ── 2. RENDERIZAÇÃO DA PÁGINA ── */
   return (
-    <div className="space-y-6 md:space-y-8">
+    <div className="space-y-3 sm:space-y-4 md:space-y-6">
 
       {/* ── CABEÇALHO DA PÁGINA ──
           Em mobile: título e botão empilhados (flex-col)
           Em desktop: lado a lado (flex-row) */}
-      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 sm:gap-4">
         <div>
-          <h1 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-on-surface">
+          <h1 className="text-xl sm:text-2xl md:text-3xl font-extrabold tracking-tight text-on-surface">
             Painel de Controle
           </h1>
-          <p className="text-on-surface-variant mt-1 text-sm">
+          <p className="text-on-surface-variant mt-0.5 sm:mt-1 text-xs sm:text-sm">
             Resumo operacional e métricas de desempenho do depósito.
           </p>
         </div>
@@ -98,9 +98,9 @@ export const Dashboard: React.FC = () => {
         {/* Botão de ação rápida — leva para a tela de movimentações */}
         <button
           onClick={() => navegar('/app/movimentacoes')}
-          className="flex items-center gap-2 bg-[#3525cd] hover:bg-[#4d44e3] text-white font-semibold px-5 py-2.5 sm:px-6 sm:py-3 rounded-full text-sm shadow-md hover:shadow-lg transition-all active:scale-95 whitespace-nowrap"
+          className="flex items-center gap-2 bg-[#3525cd] hover:bg-[#4d44e3] text-white font-semibold px-3 sm:px-5 md:px-6 py-2 sm:py-2.5 md:py-3 rounded-full text-xs sm:text-sm shadow-md hover:shadow-lg transition-all active:scale-95 whitespace-nowrap"
         >
-          <span className="material-symbols-outlined text-lg">add</span>
+          <span className="material-symbols-outlined text-base sm:text-lg">add</span>
           <span>Registrar Movimento</span>
         </button>
       </div>

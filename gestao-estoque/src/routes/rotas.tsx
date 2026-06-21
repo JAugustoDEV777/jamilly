@@ -36,12 +36,12 @@ const LayoutPrincipal: React.FC = () => {
 
       {/* Área de conteúdo principal
           md:ml-[17rem] → desloca o conteúdo para não sobrepor a sidebar
-          pb-[calc(5.5rem+env(safe-area-inset-bottom))] → espaço para navbar + safe area em mobile */}
+          pb-[calc(4rem+env(safe-area-inset-bottom))] → espaço para navbar + safe area em mobile */}
       <main
         className="flex-1 md:ml-[17rem] min-h-screen flex flex-col"
         style={{
           minHeight: '100dvh',
-          paddingBottom: 'calc(5.5rem + env(safe-area-inset-bottom, 0px))',
+          paddingBottom: 'calc(4rem + env(safe-area-inset-bottom, 0px))',
         }}
       >
         {/* Em desktop, remove o padding-bottom da main */}
@@ -52,7 +52,7 @@ const LayoutPrincipal: React.FC = () => {
 
         {/* Área de conteúdo dinâmico das páginas filhas
             Padding lateral responsivo: menor em mobile, maior em desktop */}
-        <div className="w-full max-w-[1400px] mx-auto p-4 sm:p-6 md:p-10 flex-1 animar-entrada">
+        <div className="w-full max-w-[1400px] mx-auto p-3 sm:p-4 md:p-6 lg:p-10 flex-1 animar-entrada">
           <Outlet />
         </div>
       </main>

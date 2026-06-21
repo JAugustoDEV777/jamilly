@@ -145,13 +145,13 @@ const BarraNavegacaoInferior = styled.nav`
   left: 0;
   width: 100%;
   /* Altura base + safe area da barra de home do iPhone */
-  height: calc(4.5rem + env(safe-area-inset-bottom, 0px));
+  height: calc(4rem + env(safe-area-inset-bottom, 0px));
   background-color: var(--color-surface-container-lowest);
   border-top: 1px solid var(--color-outline-variant);
   display: flex;
   justify-content: space-around;
   align-items: flex-start; /* Alinha ao topo para que os itens fiquem na parte visível */
-  padding-top: 0.5rem;
+  padding-top: 0.4rem;
   z-index: 50;
   box-shadow: 0 -4px 10px rgba(0, 0, 0, 0.05);
   /* Respeita a barra de home do iPhone (Dynamic Island) */
@@ -170,16 +170,15 @@ const LinkMenuMovel = styled(NavLink)`
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 0.2rem;
+  gap: 0.15rem;
   text-decoration: none;
-  font-size: 0.75rem; /* 12px — mais legível em mobile */
+  font-size: 0.65rem; /* 12px — mais legível em mobile */
   font-weight: 600;
   color: var(--color-on-surface-variant);
-  padding: 0.5rem 1.25rem;
+  padding: 0.3rem 1rem;
   border-radius: 0.75rem;
-  min-width: 5rem;
+  min-width: 3.5rem;
   transition: all 0.2s;
-  min-width: 4rem; /* Área de toque mínima de 64px */
 
   /* Estado ativo: fundo e cor primária */
   &.active {
