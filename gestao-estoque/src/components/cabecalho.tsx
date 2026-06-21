@@ -229,11 +229,11 @@ export const Cabecalho: React.FC = () => {
 
         {/* Botões de ação do cabeçalho */}
         <div className="flex items-center gap-3 md:gap-4">
-          <div className="hidden sm:flex flex-col items-end text-right gap-0.5 mr-1">
+          <div className="flex flex-col items-end text-right gap-0.5 mr-1 sm:hidden">
             <span className="text-sm font-semibold text-on-surface">{nomeUsuario}</span>
             <span className="text-xs text-on-surface-variant">{cargoUsuario}</span>
           </div>
-          <div className="w-10 h-10 rounded-full bg-[#3525cd] text-white font-bold flex items-center justify-center text-sm shadow-sm">
+          <div className="w-10 h-10 rounded-full bg-[#3525cd] text-white font-bold flex items-center justify-center text-sm shadow-sm sm:hidden">
             {iniciais}
           </div>
 
