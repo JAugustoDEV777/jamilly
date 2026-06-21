@@ -208,10 +208,6 @@ export const Cabecalho: React.FC = () => {
   const nomeUsuario = usuario?.nome || 'Usuário';
   const cargoUsuario = usuario?.cargo || 'Cargo';
 
-  /* Páginas onde o elemento circulado deve aparecer em mobile */
-  const paginasComElementoMobile = ['/dashboard', '/estoque', '/movimentacoes', '/configuracoes'];
-  const deveMostrarEmMobile = paginasComElementoMobile.some(rota => pathname.includes(rota));
-
   /* ── PRODUTOS COM ESTOQUE BAIXO ── */
   const produtosCriticos = produtos.filter(p => p.quantidade <= p.estoqueMinimo).sort((a, b) => a.quantidade - b.quantidade);
 
