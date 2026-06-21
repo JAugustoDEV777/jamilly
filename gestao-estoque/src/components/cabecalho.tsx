@@ -217,8 +217,8 @@ export const Cabecalho: React.FC = () => {
       <header style={{ paddingTop: 'env(safe-area-inset-top)' }} className="sticky top-0 z-40 flex justify-between items-center w-full px-3 sm:px-6 md:px-10 h-14 sm:h-16 md:h-20 bg-[#fcf8ff]/80 backdrop-blur-md border-b border-[#c7c4d8]/40">
 
         {/* Campo de busca global — oculto em mobile para economizar espaço */}
-        <div className="flex items-center gap-4 flex-1">
-          <div className="relative w-full max-w-md hidden sm:block">
+        <div className="flex items-center gap-4 flex-1 min-w-0">
+          <div className="relative w-full max-w-md hidden sm:block min-w-0">
             <input
               className="w-full pl-4 pr-4 py-2 md:py-2.5 bg-[#f5f2ff] border border-[#c7c4d8]/40 rounded-full text-sm focus:ring-2 focus:ring-[#3525cd] focus:border-transparent outline-none transition-all placeholder:text-[#464555]/50"
               placeholder="Pesquisar no sistema..."
@@ -228,7 +228,7 @@ export const Cabecalho: React.FC = () => {
         </div>
 
         {/* Botões de ação do cabeçalho */}
-        <div className="flex items-center gap-3 md:gap-4">
+        <div className="flex items-center gap-3 md:gap-4 min-w-0">
           <div className="flex flex-col items-end text-right gap-0.5 mr-1 sm:hidden">
             <span className="text-sm font-semibold text-on-surface">{nomeUsuario}</span>
             <span className="text-xs text-on-surface-variant">{cargoUsuario}</span>

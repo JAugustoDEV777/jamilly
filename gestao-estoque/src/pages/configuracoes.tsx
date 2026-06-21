@@ -179,7 +179,7 @@ export const Configuracoes: React.FC = () => {
               Configurações
             </h1>
           </div>
-          <p className="text-on-surface-variant text-base ml-14 max-w-2xl leading-relaxed">
+          <p className="text-on-surface-variant text-base sm:ml-14 ml-0 max-w-2xl leading-relaxed">
             Personalize seu perfil, defina suas preferências de sistema e gerencie detalhes operacionais.
           </p>
         </div>
@@ -397,7 +397,7 @@ export const Configuracoes: React.FC = () => {
       </div>
 
       {/* ── BARRA DE AÇÕES INFERIOR ── */}
-      <div className="fixed bottom-0 left-0 right-0 bg-white border-t border-[#dcd8e5] shadow-lg md:static md:shadow-none md:border-t md:bg-transparent md:border-[#dcd8e5] dark:bg-[var(--color-surface-container-lowest)] dark:border-[var(--color-outline-variant)]">
+      <div className="bg-white border-t border-[#dcd8e5] shadow-sm md:shadow-none md:border-t md:bg-transparent md:border-[#dcd8e5] dark:bg-[var(--color-surface-container-lowest)] dark:border-[var(--color-outline-variant)]">
         <div className="w-full max-w-[1400px] mx-auto p-4 sm:p-6 md:p-0">
           {sucessoSalvar ? (
             <div className="mb-4 rounded-xl bg-[#f0f8f4] border border-[#a8d5ba] text-[#006c49] px-5 py-4 text-sm font-medium flex items-center gap-2 animate-in fade-in duration-300">

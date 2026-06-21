@@ -294,7 +294,7 @@ export const Movimentacoes: React.FC = () => {
         </div>
         
         {/* Ações principais no cabeçalho */}
-        <div className="grid grid-cols-3 md:flex items-center gap-2 w-full md:w-auto">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:flex items-center gap-2 w-full md:w-auto">
           <button
             onClick={abrirModalEntrada}
             className="flex items-center justify-center gap-1.5 bg-[#006c49] hover:bg-[#005237] text-white font-semibold px-3 sm:px-4 py-2.5 rounded-full text-xs sm:text-sm shadow-md hover:shadow-lg transition-all active:scale-95 whitespace-nowrap"
