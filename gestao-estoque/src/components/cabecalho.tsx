@@ -200,6 +200,14 @@ export const Cabecalho: React.FC = () => {
   const [exibirHistorico, definirExibirHistorico] = useState(false);
   const { pathname } = useLocation();
 
+  const usuarioRaw = localStorage.getItem('usuario');
+  const usuario = usuarioRaw ? JSON.parse(usuarioRaw) : null;
+  const iniciais = usuario?.nome
+    ? usuario.nome.split(' ').slice(0, 2).map((n: string) => n[0]).join('').toUpperCase()
+    : 'US';
+  const nomeUsuario = usuario?.nome || 'Usuário';
+  const cargoUsuario = usuario?.cargo || 'Cargo';
+
   /* Páginas onde o elemento circulado deve aparecer em mobile */
   const paginasComElementoMobile = ['/dashboard', '/estoque', '/movimentacoes', '/configuracoes'];
   const deveMostrarEmMobile = paginasComElementoMobile.some(rota => pathname.includes(rota));
@@ -216,21 +224,9 @@ export const Cabecalho: React.FC = () => {
 
         {/* Campo de busca global — oculto em mobile para economizar espaço */}
         <div className="flex items-center gap-4 flex-1">
-          {/* Elemento circulado que aparece APENAS EM MOBILE nas páginas específicas */}
-          {deveMostrarEmMobile && (
-            <div className="sm:hidden flex items-center gap-2">
-              <button className="p-2 text-[#464555] hover:bg-[#eae6f4] rounded-full transition-transform active:scale-90">
-                <span className="material-symbols-outlined text-xl">search</span>
-              </button>
-            </div>
-          )}
-
           <div className="relative w-full max-w-md hidden sm:block">
-            <span className="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-[#777587]">
-              search
-            </span>
             <input
-              className="w-full pl-10 pr-4 py-2 md:py-2.5 bg-[#f5f2ff] border border-[#c7c4d8]/40 rounded-full text-sm focus:ring-2 focus:ring-[#3525cd] focus:border-transparent outline-none transition-all placeholder:text-[#464555]/50"
+              className="w-full pl-4 pr-4 py-2 md:py-2.5 bg-[#f5f2ff] border border-[#c7c4d8]/40 rounded-full text-sm focus:ring-2 focus:ring-[#3525cd] focus:border-transparent outline-none transition-all placeholder:text-[#464555]/50"
               placeholder="Pesquisar no sistema..."
               type="text"
             />
@@ -238,7 +234,15 @@ export const Cabecalho: React.FC = () => {
         </div>
 
         {/* Botões de ação do cabeçalho */}
-        <div className="flex items-center gap-2 md:gap-4">
+        <div className="flex items-center gap-3 md:gap-4">
+          <div className="hidden sm:flex flex-col items-end text-right gap-0.5 mr-1">
+            <span className="text-sm font-semibold text-on-surface">{nomeUsuario}</span>
+            <span className="text-xs text-on-surface-variant">{cargoUsuario}</span>
+          </div>
+          <div className="w-10 h-10 rounded-full bg-[#3525cd] text-white font-bold flex items-center justify-center text-sm shadow-sm">
+            {iniciais}
+          </div>
+
           {/* Notificações — com badge de alerta vermelho */}
           <button
             onClick={() => {

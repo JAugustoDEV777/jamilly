@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useTema } from '../context/TemaContext';
 
 interface UsuarioPerfil {
@@ -6,7 +6,6 @@ interface UsuarioPerfil {
   nome?: string;
   cargo?: string;
   email?: string;
-  foto?: string | null;
 }
 
 export const Configuracoes: React.FC = () => {
@@ -15,7 +14,6 @@ export const Configuracoes: React.FC = () => {
   const [nome, setNome] = useState('');
   const [cargo, setCargo] = useState('');
   const [email, setEmail] = useState('');
-  const [fotoPerfil, setFotoPerfil] = useState<string | null>(null);
   const [salvando, setSalvando] = useState(false);
   const [erroSalvar, setErroSalvar] = useState('');
   
@@ -29,8 +27,6 @@ export const Configuracoes: React.FC = () => {
   const [erroCategoria, setErroCategoria] = useState('');
   const [sucessoSalvar, setSucessoSalvar] = useState('');
   
-  const fileInputRef = useRef<HTMLInputElement | null>(null);
-
   useEffect(() => {
     const usuarioRaw = localStorage.getItem('usuario');
     if (usuarioRaw) {
@@ -39,7 +35,6 @@ export const Configuracoes: React.FC = () => {
       setNome(usuario.nome || '');
       setCargo(usuario.cargo || '');
       setEmail(usuario.email || '');
-      setFotoPerfil(usuario.foto || null);
     }
     
     // Carrega categorias do backend
@@ -72,7 +67,6 @@ export const Configuracoes: React.FC = () => {
     setNome(usuario.nome || '');
     setCargo(usuario.cargo || '');
     setEmail(usuario.email || '');
-    setFotoPerfil(usuario.foto || null);
   };
 
   const handleSalvar = async () => {
@@ -94,7 +88,6 @@ export const Configuracoes: React.FC = () => {
           nome,
           cargo,
           email,
-          foto: fotoPerfil,
         }),
       });
 
@@ -125,25 +118,6 @@ export const Configuracoes: React.FC = () => {
     carregarUsuario();
     carregarCategorias();
     setNovaCategoria('');
-  };
-
-  const handleAlterarFoto = () => {
-    fileInputRef.current?.click();
-  };
-
-  const handleFotoChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files?.[0];
-    if (!file) return;
-
-    const reader = new FileReader();
-    reader.onload = () => {
-      setFotoPerfil(reader.result as string);
-    };
-    reader.readAsDataURL(file);
-  };
-
-  const handleRemoverFoto = () => {
-    setFotoPerfil(null);
   };
 
   const adicionarCategoria = async () => {
@@ -224,62 +198,6 @@ export const Configuracoes: React.FC = () => {
               <h2 className="text-xl font-bold text-on-surface">Dados Pessoais</h2>
             </div>
             
-            {/* Foto de Perfil - Seção Destacada */}
-            <div className="mb-8 p-6 bg-gradient-to-br from-[#3525cd]/5 to-[#f5f2ff] rounded-2xl border border-[#3525cd]/20">
-              <p className="text-xs font-bold text-on-surface-variant mb-4 uppercase tracking-wide">Foto de Perfil</p>
-              <div className="flex items-start gap-6">
-                <div className="relative">
-                  <div className="w-24 h-24 bg-gradient-to-br from-[#f5f2ff] to-[#eae6f4] rounded-2xl border-2 border-[#3525cd]/20 flex items-center justify-center overflow-hidden shadow-md hover:shadow-lg transition-all">
-                    {fotoPerfil ? (
-                      <img src={fotoPerfil} alt="Foto de perfil" className="w-full h-full object-cover" />
-                    ) : (
-                      <span className="material-symbols-outlined text-5xl text-[#3525cd]/30">person</span>
-                    )}
-                    <button
-                      type="button"
-                      onClick={handleAlterarFoto}
-                      className="absolute bottom-0 right-0 bg-[#3525cd] text-white p-2 rounded-full flex items-center justify-center transform translate-x-1/4 translate-y-1/4 border-2 border-white shadow-lg hover:bg-[#4d44e3] transition-all active:scale-95"
-                    >
-                      <span className="material-symbols-outlined text-4xl">photo_camera</span>
-                    </button>
-                    <input
-                      ref={fileInputRef}
-                      type="file"
-                      accept="image/*"
-                      className="hidden"
-                      onChange={handleFotoChange}
-                    />
-                  </div>
-                </div>
-                <div className="flex-1 flex flex-col justify-center">
-                  <p className="text-sm font-medium text-on-surface mb-3">
-                    {fotoPerfil ? 'Foto adicionada' : 'Nenhuma foto adicionada'}
-                  </p>
-                  <div className="flex gap-2 flex-wrap">
-                    <button
-                      type="button"
-                      onClick={handleAlterarFoto}
-                      className="px-4 py-2 text-sm font-bold text-[#3525cd] bg-white border border-[#3525cd] rounded-lg hover:bg-[#3525cd] hover:text-white transition-all active:scale-95"
-                    >
-                      {fotoPerfil ? 'Alterar' : 'Adicionar Foto'}
-                    </button>
-                    <button
-                      type="button"
-                      onClick={handleRemoverFoto}
-                      className={`px-4 py-2 text-sm font-bold rounded-lg transition-all active:scale-95 ${
-                        fotoPerfil
-                          ? 'text-[#ba1a1a] bg-[#ffeded] border border-[#f5c2c7] hover:bg-[#ba1a1a] hover:text-white'
-                          : 'text-[#999] bg-[#f5f5f5] border border-[#e0e0e0] cursor-not-allowed'
-                      }`}
-                      disabled={!fotoPerfil}
-                    >
-                      Remover
-                    </button>
-                  </div>
-                </div>
-              </div>
-            </div>
-
             {/* Campos Nome e Cargo */}
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-5 mb-6">
               <div>

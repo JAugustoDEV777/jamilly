@@ -76,13 +76,12 @@ export const Login: React.FC = () => {
             <div>
               <label className="block text-xs font-bold text-on-surface-variant mb-1.5 ml-1 dark:text-[var(--color-on-surface-variant)]">Nome de usuário</label>
               <div className="relative flex items-center">
-                <span className="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant text-[18px] dark:text-[var(--color-on-surface-variant)] pointer-events-none">person</span>
                 <input
                   type="text"
                   value={nomeUsuario}
                   onChange={(e) => setNomeUsuario(e.target.value)}
                   placeholder="Seu nome de usuário"
-                  className="w-full bg-[#f5f2ff] border border-[#dcd8e5] text-sm rounded-xl py-3 pl-10 pr-4 outline-none focus:border-[#3525cd] focus:ring-1 focus:ring-[#3525cd] transition-all"
+                  className="w-full bg-[#f5f2ff] border border-[#dcd8e5] text-sm rounded-xl py-3 pl-4 pr-4 outline-none focus:border-[#3525cd] focus:ring-1 focus:ring-[#3525cd] transition-all"
                   required
                 />
               </div>
@@ -95,13 +94,12 @@ export const Login: React.FC = () => {
                 <a href="#" className="text-xs font-bold text-[#3525cd] hover:underline">Esqueci minha senha</a>
               </div>
               <div className="relative flex items-center">
-                <span className="material-symbols-outlined absolute left-3.5 top-1/2 -translate-y-1/2 text-on-surface-variant text-[20px]">lock</span>
                 <input
                   type={mostrarSenha ? "text" : "password"}
                   value={senha}
                   onChange={(e) => setSenha(e.target.value)}
                   placeholder="••••••••"
-                  className="w-full bg-[#f5f2ff] border border-[#dcd8e5] text-sm rounded-xl py-3 pl-10 pr-10 outline-none focus:border-[#3525cd] focus:ring-1 focus:ring-[#3525cd] transition-all font-mono"
+                  className="w-full bg-[#f5f2ff] border border-[#dcd8e5] text-sm rounded-xl py-3 pl-4 pr-10 outline-none focus:border-[#3525cd] focus:ring-1 focus:ring-[#3525cd] transition-all font-mono"
                   required
                 />
                 <button
