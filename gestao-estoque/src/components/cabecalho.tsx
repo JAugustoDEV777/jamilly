@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { useLocation } from 'react-router-dom';
 import { useEstoque } from '../context/EstoqueContext';
 import styled from 'styled-components';
 
@@ -198,7 +197,6 @@ export const Cabecalho: React.FC = () => {
   const { produtos, movimentacoes } = useEstoque();
   const [exibirNotificacoes, definirExibirNotificacoes] = useState(false);
   const [exibirHistorico, definirExibirHistorico] = useState(false);
-  const { pathname } = useLocation();
 
   const usuarioRaw = localStorage.getItem('usuario');
   const usuario = usuarioRaw ? JSON.parse(usuarioRaw) : null;
