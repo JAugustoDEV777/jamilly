@@ -1,0 +1,76 @@
+generator client {
+  provider = "prisma-client-js"
+  output   = "../src/generated/prisma"
+  binaryTargets = ["native", "rhel-openssl-3.0.x"]
+}
+
+datasource db {
+  provider  = "postgresql"
+}
+
+/// MODELO: Categoria
+/// Representa as categorias dos produtos (ex: "Cervejas", "Destilados", etc.)
+/// Alimenta o campo de seleção (Select) do formulário de cadastro.
+model Categoria {
+  id        Int       @id @default(autoincrement())
+  nome      String    @unique // Nome da categoria (ex: "Cervejas")
+  produtos  Produto[] // Relação de um para muitos (uma categoria pode ter vários produtos)
+  createdAt DateTime  @default(now())
+}
+
+/// MODELO: Produto
+/// Contém todos os campos mapeados diretamente das imagens do formulário "Novo Produto".
+model Produto {
+  id               Int            @id @default(autoincrement())
+  dataCadastro     DateTime       @default(now()) // Seção: DATA DE CADASTRO
+  nome             String         // Seção: IDENTIFICAÇÃO -> NOME DO PRODUTO (Ex: Cerveja IPA 600ml)
+  unidadesPorPack  Int            @default(1)    // Seção: IDENTIFICAÇÃO -> UNIDADES POR PACK
+
+  // Seção: CONTROLE DE ESTOQUE
+  qtdAtual         Int            @default(0)    // QTD ATUAL
+  qtdMinima        Int            @default(0)    // QTD MÍNIMA
+  qtdMaxima        Int            @default(0)    // QTD MÁXIMA
+
+  // Seção: FINANCEIRO
+  // Nota: Usamos o tipo 'Decimal' para valores monetários para evitar problemas de arredondamento de ponto flutuante.
+  custoDeCompra    Decimal        @db.Decimal(10, 2) // CUSTO DE COMPRA (R$ 0,00)
+  precoDeVenda     Decimal        @db.Decimal(10, 2) // PREÇO DE VENDA (R$ 0,00)
+
+  // RELACIONAMENTO COM CATEGORIA
+  categoriaId      Int
+  categoria        Categoria      @relation(fields: [categoriaId], references: [id])
+
+  // RELACIONAMENTO COM MOVIMENTAÇÕES (Histórico de saídas)
+  movimentacoes    Movimentacao[]
+}
+
+/// MODELO: Movimentacao (Saída / Expedição)
+/// Registra o fluxo de saída mapeado na imagem "Registrar Saída / Expedição".
+model Movimentacao {
+  id                  Int      @id @default(autoincrement())
+  dataMovimentacao    DateTime @default(now()) // Data e hora em que a saída foi realizada
+
+  // Campos vindos do formulário de Saída
+  quantidade          Int      // QUANTIDADE
+  precoVendaUnitario  Decimal  @db.Decimal(10, 2) // PREÇO DE VENDA UNITÁRIO (pode ser diferente do preço padrão do produto no dia)
+  tipo                String   // Tipo de movimentação: entrada ou saida
+  lucroEstimado       Decimal  @db.Decimal(10, 2) // Lucro calculado no momento da venda (Preço Venda - Custo) * Qtd
+  destinoCliente      String   // DESTINO / CLIENTE (Ex: Mercadinho Rota Sul)
+  conferenteResponsavel String // CONFERENTE RESPONSÁVEL (Ex: Marcos V.)
+
+  // RELACIONAMENTO COM O PRODUTO (Para saber qual produto saiu)
+  produtoId           Int
+  produto             Produto  @relation(fields: [produtoId], references: [id], onDelete: Cascade)
+}
+
+/// MODELO: Usuario
+/// Representa os usuários do sistema com acesso ao Painel
+model Usuario {
+  id        Int      @id @default(autoincrement())
+  nome      String   @unique
+  email     String   @unique
+  senha     String
+  cargo     String?
+  foto      String?
+  createdAt DateTime @default(now())
+}

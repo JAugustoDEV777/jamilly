@@ -1,0 +1,483 @@
+/* ============================================================
+   ESTILOS GLOBAIS DO SISTEMA InvSync Pro
+   Estratégia: Mobile-first (base mobile, então sm/md/lg para cima)
+   ============================================================ */
+
+/* ── VARIÁVEIS DE COR (Design Tokens) ──
+   Paleta roxo/azul para marca primária + verde para operações positivas */
+:root {
+  /* Superfícies (do mais claro ao mais escuro) */
+  --color-background: #fcf8ff;
+  --color-surface-container-lowest: #ffffff;
+  --color-surface-container-low: #f5f2ff;
+  --color-surface-container: #f0ecf9;
+  --color-surface-container-high: #eae6f4;
+  --color-surface-container-highest: #e4e1ee;
+
+  /* Cor primária — roxo/índigo da marca */
+  --color-primary: #3525cd;
+  --color-primary-container: #4f46e5;
+  --color-on-primary: #ffffff;
+  --color-on-primary-container: #dad7ff;
+
+  /* Cor secundária — verde para entradas/positivo */
+  --color-secondary: #006c49;
+  --color-secondary-container: #6cf8bb;
+  --color-on-secondary: #ffffff;
+  --color-on-secondary-container: #00714d;
+
+  /* Cor de erro — vermelho para críticos/negativos */
+  --color-error: #ba1a1a;
+  --color-error-container: #ffdad6;
+  --color-on-error: #ffffff;
+  --color-on-error-container: #93000a;
+
+  /* Texto principal e secundário */
+  --color-on-surface: #1b1b24;
+  --color-on-surface-variant: #464555;
+  --color-outline-variant: #c7c4d8;
+
+  /* Safe area fallbacks */
+  --safe-top: env(safe-area-inset-top, 0px);
+  --safe-bottom: env(safe-area-inset-bottom, 0px);
+  --safe-left: env(safe-area-inset-left, 0px);
+  --safe-right: env(safe-area-inset-right, 0px);
+}
+
+/* ── TEMA ESCURO ── */
+html.dark {
+  /* Superfícies invertidas (do mais escuro ao mais claro) */
+  --color-background: #0f0f1a;
+  --color-surface-container-lowest: #161620;
+  --color-surface-container-low: #1c1c2a;
+  --color-surface-container: #222233;
+  --color-surface-container-high: #28283a;
+  --color-surface-container-highest: #333345;
+
+  /* Cores primárias (mantidas mas ajustadas para melhor contraste) */
+  --color-primary: #6f5ffd;
+  --color-primary-container: #4f46e5;
+  --color-on-primary: #1b1b24;
+  --color-on-primary-container: #e8e5ff;
+
+  /* Cores secundárias */
+  --color-secondary: #4cf8bb;
+  --color-secondary-container: #006c49;
+  --color-on-secondary: #001f12;
+  --color-on-secondary-container: #6cf8bb;
+
+  /* Cor de erro (ajustada para dark) */
+  --color-error: #ff8a80;
+  --color-error-container: #ba1a1a;
+  --color-on-error: #000000;
+  --color-on-error-container: #ffdad6;
+
+  /* Texto e variantes */
+  --color-on-surface: #e8e5f0;
+  --color-on-surface-variant: #b3b0c3;
+  --color-outline-variant: #49464f;
+}
+
+/* ── DARK MODE OVERRIDES PARA CLASSES FIXAS ── */
+html.dark body {
+  background-color: var(--color-background);
+  color: var(--color-on-surface);
+}
+
+html.dark .bg-white,
+html.dark [class*='bg-white'],
+html.dark [class*='bg-white/'],
+html.dark [class*='bg-[#fcf8ff]'],
+html.dark [class*='bg-[#f5f2ff]'],
+html.dark [class*='bg-[#eae6f4]'],
+html.dark [class*='bg-[#f0ecf9]'] {
+  background-color: var(--color-surface-container) !important;
+}
+
+html.dark [class*='bg-[#dcd8e5]'] {
+  background-color: var(--color-surface-container-highest) !important;
+}
+
+html.dark [class*='border-[#dcd8e5]'],
+html.dark [class*='border-[#c7c4d8]'] {
+  border-color: var(--color-outline-variant) !important;
+}
+
+/* For classes that use explicit hex color tokens in classnames (eg. text-[#464555])
+   force them to use the dark-mode text token to improve readability. */
+html.dark [class*='text-[#'],
+html.dark [class*='text-on-surface-variant'],
+html.dark [class*='text-on-surface'] {
+  color: var(--color-on-surface) !important;
+}
+
+/* Ensure borders and outlines using arbitrary hex tokens get dark-mode color */
+html.dark [class*='border-[#'],
+html.dark [class*='border-on-surface'] {
+  border-color: var(--color-outline-variant) !important;
+}
+
+/* Inputs, selects and other form controls that rely on bg-white variants */
+html.dark input,
+html.dark select,
+html.dark textarea,
+html.dark button {
+  background-color: transparent;
+  color: var(--color-on-surface);
+}
+
+/* Força gradientes e backgrounds claros a usarem superfícies escuras no modo escuro
+   Isso corrige cards que ficavam muito claros (ex.: Configurações, Dados Pessoais). */
+html.dark [class*='bg-gradient-to-br'],
+html.dark .bg-gradient-to-br,
+html.dark [class*='from-white'],
+html.dark [class*='via-[#f5f2ff]'],
+html.dark [class*='to-[#eae6f4]'],
+html.dark [class*='from-[#3525cd]'] {
+  background-image: none !important;
+  background-color: var(--color-surface-container-high) !important;
+  color: var(--color-on-surface) !important;
+}
+
+/* Bordas claras utilizadas em cards/inputs */
+html.dark [class*='border-white'],
+html.dark [class*='border-[#ffffff]'] {
+  border-color: var(--color-outline-variant) !important;
+}
+
+/* Ícones e símbolos que usavam um tom cinza claro muito próximo do fundo */
+html.dark .material-symbols-outlined {
+  color: var(--color-on-surface-variant) !important;
+}
+
+/* ── RESET E BASE ── */
+*,
+*::before,
+*::after {
+  box-sizing: border-box; /* Inclui padding/border no cálculo de largura */
+}
+
+html {
+  /* Garante que scroll seja suave em toda a aplicação */
+  scroll-behavior: smooth;
+  /* Previne zoom automático em inputs em iOS (mínimo 16px) */
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+  /* Previne bounce scroll em iOS */
+  height: 100%;
+}
+
+body {
+  font-family: 'Inter', sans-serif;
+  background-color: var(--color-background);
+  color: var(--color-on-surface);
+  margin: 0;
+  padding: 0;
+  min-height: 100%;
+  min-height: 100dvh;
+  /* Suavidade de renderização de fontes */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  /* Evita scroll horizontal indesejado em mobile */
+  overflow-x: hidden;
+  /* Suporte a safe area do iPhone (notch + Dynamic Island) */
+  padding-top: env(safe-area-inset-top);
+  padding-left: env(safe-area-inset-left);
+  padding-right: env(safe-area-inset-right);
+}
+
+#root {
+  min-height: 100vh;
+  min-height: 100dvh;
+}
+
+/* Garante que imagens e elementos de bloco não causem overflow */
+img,
+video,
+iframe {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+/* ── SCROLLBAR PERSONALIZADA ──
+   Aplicada com a classe .custom-scrollbar nos containers */
+.custom-scrollbar::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: transparent;
+}
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: var(--color-outline-variant);
+  border-radius: 10px;
+}
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: var(--color-on-surface-variant);
+}
+
+/* ── ÁREA DE TOQUE MÍNIMA PARA MOBILE ──
+   Botões e links devem ter pelo menos 44x44px para uso confortável */
+button,
+a,
+[role="button"] {
+  min-height: 44px; /* Material Design recomenda 48px, Apple recomenda 44pt */
+  cursor: pointer;
+  /* Remove o destaque azul de toque em iOS */
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* ── ANIMAÇÃO DE ENTRADA DAS PÁGINAS ──
+   Aplicada com a classe .animar-entrada no container de conteúdo */
+@keyframes entrarSuave {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animar-entrada {
+  animation: entrarSuave 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+  transform: none;
+}
+
+/* ── UTILITÁRIOS DE RESPONSIVIDADE GLOBAL ──
+   Classes auxiliares para mostrar/ocultar elementos em breakpoints */
+
+/* Oculta em mobile, exibe a partir de sm (≥ 640px) */
+.sm\:block { display: none; }
+@media (min-width: 640px) {
+  .sm\:block { display: block; }
+}
+
+/* Garante que a área de conteúdo não fique estreita demais em qualquer tela */
+.conteudo-principal {
+  width: 100%;
+  max-width: 1400px; /* Limita largura em monitores ultra-wide */
+  margin: 0 auto;
+}
+
+/* ── AJUSTES ESPECÍFICOS PARA DISPOSITIVOS MÓVEIS ──
+   Pequenos resets de comportamento padrão do navegador */
+
+/* iPhone 16 Pro Max (430px) */
+@media (max-width: 430px) {
+  body {
+    font-size: 14px;
+  }
+  
+  h1 { font-size: 1.5rem !important; }
+  h2 { font-size: 1.25rem !important; }
+  h3 { font-size: 1.1rem !important; }
+  
+  /* Padding reduzido em containers */
+  .conteudo-principal {
+    padding: 1rem 0.75rem;
+  }
+  
+  /* Inputs recebem padding reduzido */
+  input, select, textarea {
+    padding: 0.625rem 0.75rem !important;
+    font-size: 16px;
+  }
+  
+  /* Botões maiores para touch */
+  button, [role="button"] {
+    min-height: 48px;
+    min-width: 44px;
+  }
+  
+  /* Remove bordas arredondadas em selects */
+  select {
+    -webkit-appearance: none;
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24'%3E%3Cpath fill='%23464555' d='M7 10l5 5 5-5z'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 0.75rem center;
+    background-size: 14px;
+    padding-right: 2.5rem;
+  }
+  
+  /* Modais ocupam tela inteira em mobile */
+  .modal, .janela-modal {
+    max-width: 100vw !important;
+    max-height: 90vh !important;
+    margin: 0 !important;
+    border-radius: 1.5rem 1.5rem 0 0 !important;
+  }
+  
+  /* Tabelas em mobile: reduz padding */
+  table td, table th {
+    padding: 0.5rem 0.625rem !important;
+    font-size: 0.8125rem !important;
+  }
+  
+  /* Cards em mobile: mais espaçamento */
+  .card {
+    margin-bottom: 0.75rem;
+    padding: 1rem 0.75rem !important;
+  }
+  
+  /* Flex direction em mobile */
+  .flex-col-mobile {
+    flex-direction: column !important;
+  }
+}
+
+/* Tablet (430px a 768px) */
+@media (min-width: 430px) and (max-width: 768px) {
+  body {
+    font-size: 15px;
+  }
+  
+  input, select, textarea {
+    font-size: 15px;
+    padding: 0.625rem 0.875rem;
+  }
+  
+  button, [role="button"] {
+    min-height: 44px;
+  }
+  
+  /* Grid em 2 colunas em tablets */
+  .grid-mobile-2col {
+    display: grid !important;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.75rem;
+  }
+}
+
+/* Desktop (> 1024px) */
+@media (min-width: 1024px) {
+  body {
+    font-size: 16px;
+  }
+  
+  input, select, textarea {
+    font-size: 0.875rem;
+    padding: 0.625rem 1rem;
+  }
+  
+  /* Flex row em desktop */
+  .flex-row-desktop {
+    flex-direction: row !important;
+  }
+  
+  /* Grid em 3 colunas em desktop */
+  .grid-desktop-3col {
+    display: grid !important;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+  }
+}
+
+/* Devices muito pequenos (< 375px - iPhone SE, etc) */
+@media (max-width: 374px) {
+  body {
+    font-size: 13px;
+  }
+  
+  h1 { font-size: 1.3rem !important; }
+  h2 { font-size: 1.1rem !important; }
+  
+  button, [role="button"] {
+    min-height: 44px;
+    padding: 0.5rem 0.75rem !important;
+    font-size: 0.75rem;
+  }
+  
+  input, select {
+    font-size: 14px;
+    padding: 0.5rem 0.625rem;
+  }
+  
+  table td, table th {
+    padding: 0.35rem 0.5rem !important;
+    font-size: 0.75rem !important;
+  }
+}
+
+/* Landscape mode (altura reduzida) */
+@media (max-height: 500px) {
+  body {
+    padding-top: 0;
+  }
+  
+  .conteudo-principal {
+    padding: 0.75rem;
+  }
+  
+  .modal, .janela-modal {
+    max-height: 95vh !important;
+    overflow-y: auto;
+  }
+}
+
+/* Suporte a Safe Area (iPhone notch) */
+@supports (padding: max(0px)) {
+  body {
+    padding-left: max(1rem, env(safe-area-inset-left));
+    padding-right: max(1rem, env(safe-area-inset-right));
+    padding-top: max(1rem, env(safe-area-inset-top));
+    padding-bottom: max(1rem, env(safe-area-inset-bottom));
+  }
+  
+  .sidebar {
+    padding-left: max(0, env(safe-area-inset-left));
+  }
+  
+  .navbar-footer {
+    padding-bottom: max(0.75rem, env(safe-area-inset-bottom));
+  }
+}
+
+@media (max-width: 640px) {
+  select {
+    -webkit-appearance: none;
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24'%3E%3Cpath fill='%23464555' d='M7 10l5 5 5-5z'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 0.75rem center;
+    padding-right: 2rem;
+  }
+
+  /* Aumenta levemente o tamanho da fonte base em telas muito pequenas */
+  input,
+  select,
+  textarea {
+    font-size: 16px; /* Evita zoom automático ao focar em iOS */
+  }
+}
+
+/* ── SUPORTE AO iPHONE 16 PRO MAX E TELAS COM NOTCH / DYNAMIC ISLAND ──
+   Garante que o conteúdo não seja coberto pelo Dynamic Island ou barra de home */
+
+/* Navbar inferior respeita a safe area */
+.navbar-inferior-safe {
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+}
+
+/* Header respeita a safe area superior (Dynamic Island) */
+.header-safe {
+  padding-top: env(safe-area-inset-top, 0px);
+}
+
+/* ── VIEWPORT HEIGHT CORRETO EM MOBILE ──
+   dvh (dynamic viewport height) garante que modais cubram a tela real
+   incluindo a barra de endereço do browser */
+.h-screen-mobile {
+  height: 100vh;
+  height: 100dvh;
+}
+
+/* ── MELHORIAS DE PERFORMANCE ──
+   Melhora a renderização de elementos animados */
+.modal-overlay,
+[class*="OverlayModal"] {
+  will-change: opacity;
+}

@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/png" href="/ftperfil_jamilly.png" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Gestão de Estoque</title>
+    <!-- Tailwind CSS via CDN com plugins -->
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <!-- Google Fonts: Inter, JetBrains Mono e Material Symbols Outlined -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet" />
+    
+    <!-- Configuração do tema do Tailwind CSS -->
+    <script>
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              background: "#fcf8ff",
+              surface: "#fcf8ff",
+              "surface-container-lowest": "#ffffff",
+              "surface-container-low": "#f5f2ff",
+              "surface-container": "#f0ecf9",
+              "surface-container-high": "#eae6f4",
+              "surface-container-highest": "#e4e1ee",
+              primary: "#3525cd",
+              "primary-container": "#4f46e5",
+              "on-primary": "#ffffff",
+              "on-primary-container": "#dad7ff",
+              secondary: "#006c49",
+              "secondary-container": "#6cf8bb",
+              "on-secondary": "#ffffff",
+              "on-secondary-container": "#00714d",
+              error: "#ba1a1a",
+              "error-container": "#ffdad6",
+              "on-error": "#ffffff",
+              "on-error-container": "#93000a",
+              "on-surface": "#1b1b24",
+              "on-surface-variant": "#464555",
+              "outline-variant": "#c7c4d8",
+            },
+            borderRadius: {
+              lg: "0.5rem",
+              xl: "0.75rem",
+              "2xl": "1rem",
+            }
+          }
+        }
+      }
+      
+      // Configuração de temas customizados para dark mode
+      const style = document.createElement('style');
+      style.textContent = `
+        html.dark {
+          --tw-text-opacity: 1;
+          color-scheme: dark;
+        }
+        
+        @media (prefers-color-scheme: dark) {
+          html:not(.light) {
+            color-scheme: dark;
+          }
+        }
+      `;
+      document.head.appendChild(style);
+    </script>
+    <style>
+      body {
+        background-color: #fcf8ff;
+      }
+      
+      html.dark body {
+        background-color: #0f0f1a;
+      }
+      
+      .material-symbols-outlined {
+        font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        display: inline-block;
+        vertical-align: middle;
+      }
+    </style>
+  </head>
+  <body class="font-sans antialiased text-on-surface bg-background">
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>
