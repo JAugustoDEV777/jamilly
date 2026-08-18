@@ -30,6 +30,7 @@ model Produto {
   qtdAtual         Int            @default(0)    // QTD ATUAL
   qtdMinima        Int            @default(0)    // QTD MÍNIMA
   qtdMaxima        Int            @default(0)    // QTD MÁXIMA
+  validade         DateTime?      // Data de validade opcional
 
   // Seção: FINANCEIRO
   // Nota: Usamos o tipo 'Decimal' para valores monetários para evitar problemas de arredondamento de ponto flutuante.

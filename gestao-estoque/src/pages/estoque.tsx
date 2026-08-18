@@ -53,6 +53,7 @@ export const Estoque: React.FC = () => {
 
   const [busca, definirBusca] = useState('');
   const [categoriaFiltro, definirCategoriaFiltro] = useState('todos');
+  const [mostrarApenasVencimento, definirMostrarApenasVencimento] = useState(false);
 
   const [exibirModalAdicionar, definirExibirModalAdicionar] = useState(false);
   const [exibirModalEditar, definirExibirModalEditar] = useState(false);
@@ -97,6 +98,7 @@ export const Estoque: React.FC = () => {
   const [precoVenda, definirPrecoVenda] = useState('');
   const [unidadePack, definirUnidadePack] = useState('');
   const [tipoSaida, definirTipoSaida] = useState<'uni' | 'pack'>('uni');
+  const [validade, definirValidade] = useState('');
 
   const [categoriasSalvas, setCategoriasSalvas] = useState<Array<{ id: number; nome: string }>>([]);
 
@@ -141,6 +143,7 @@ export const Estoque: React.FC = () => {
     definirPrecoVenda('');
     definirUnidadePack('');
     definirTipoSaida('uni');
+    definirValidade('');
     definirExibirModalAdicionar(true);
     definirTemModalAberto(true);
   };
@@ -158,6 +161,7 @@ export const Estoque: React.FC = () => {
     definirUnidadePack(String(produto.unidadePack));
     // Inferir tipo de saída a partir do unidadePack (1 = unidade)
     definirTipoSaida(produto.unidadePack && produto.unidadePack > 1 ? 'pack' : 'uni');
+    definirValidade(produto.validade || '');
     definirExibirModalEditar(true);
     definirTemModalAberto(true);
   };
@@ -188,6 +192,7 @@ export const Estoque: React.FC = () => {
       unidadePack: unidadePackNum,
       // lucroManual e adicionarJuros movidos para modal de saída
       tipoSaida,
+      validade: validade || undefined,
     } as any);
     definirExibirModalAdicionar(false);
     definirTemModalAberto(false);
@@ -213,10 +218,20 @@ export const Estoque: React.FC = () => {
       precoVenda: venda,
       unidadePack: unidadePackNum,
       tipoSaida,
+      validade: validade || undefined,
     } as any);
     definirExibirModalEditar(false);
     definirTemModalAberto(false);
     definirProdutoEdicao(null);
+  };
+
+  const calcularDiasRestantesValidade = (validade?: string | null) => {
+    if (!validade) return null;
+    const hoje = new Date();
+    hoje.setHours(0, 0, 0, 0);
+    const dataValidade = new Date(validade + 'T00:00:00');
+    const diffTime = dataValidade.getTime() - hoje.getTime();
+    return Math.ceil(diffTime / (1000 * 60 * 60 * 24));
   };
 
   /* ── FILTRAGEM DOS PRODUTOS ── */
@@ -227,7 +242,12 @@ export const Estoque: React.FC = () => {
       item.id.toLowerCase().includes(busca.toLowerCase());
     const correspondeCategoria =
       categoriaFiltro === 'todos' || item.categoria === categoriaFiltro;
-    return correspondeBusca && correspondeCategoria;
+    const diasRestantes = calcularDiasRestantesValidade(item.validade);
+    const correspondeValidade =
+      !mostrarApenasVencimento ||
+      (diasRestantes !== null && diasRestantes <= 10);
+
+    return correspondeBusca && correspondeCategoria && correspondeValidade;
   });
 
   /* ── UTILITÁRIOS ── */
@@ -328,6 +348,19 @@ export const Estoque: React.FC = () => {
               ))}
             </select>
           </div>
+
+          <button
+            type="button"
+            onClick={() => definirMostrarApenasVencimento((valor) => !valor)}
+            className={`flex items-center justify-center gap-2 rounded-full border px-3 py-2 text-sm font-semibold transition-all ${
+              mostrarApenasVencimento
+                ? 'border-[#d93025] bg-[#fff1f1] text-[#d93025]'
+                : 'border-[#c7c4d8]/60 bg-white text-[#464555] hover:bg-[#f5f2ff]'
+            }`}
+          >
+            <span className="material-symbols-outlined text-base">warning</span>
+            <span>{mostrarApenasVencimento ? 'Mostrando vencidos' : 'Ver vencidos'}</span>
+          </button>
         </div>
       )}
 
@@ -679,6 +712,14 @@ export const Estoque: React.FC = () => {
                     onChange={(e) => definirEstoqueMaximo(e.target.value)}
                   />
                 </div>
+                <div className="grid grid-cols-1 gap-2 md:gap-3 mt-3">
+                  <CampoTexto
+                    type="date"
+                    rotulo="Data de Validade (Opcional)"
+                    value={validade}
+                    onChange={(e) => definirValidade(e.target.value)}
+                  />
+                </div>
               </div>
 
               {/* ─ Seção: Financeiro (custo e venda) ─ */}
@@ -824,6 +865,14 @@ export const Estoque: React.FC = () => {
                     rotulo="Máximo"
                     value={estoqueMaximo}
                     onChange={(e) => definirEstoqueMaximo(e.target.value)}
+                  />
+                </div>
+                <div className="grid grid-cols-1 gap-2 md:gap-3 mt-3">
+                  <CampoTexto
+                    type="date"
+                    rotulo="Data de Validade (Opcional)"
+                    value={validade}
+                    onChange={(e) => definirValidade(e.target.value)}
                   />
                 </div>
               </div>

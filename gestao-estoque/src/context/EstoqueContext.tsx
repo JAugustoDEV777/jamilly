@@ -11,6 +11,7 @@ export interface Produto {
   precoVenda: number
   unidadePack: number
   dataCriacao: string
+  validade?: string
 }
 
 export interface Movimentacao {
@@ -65,6 +66,7 @@ interface BackendProduto {
   custoDeCompra: number | string
   precoDeVenda: number | string
   categoria: BackendCategoria
+  validade?: string | null
 }
 
 interface BackendMovimentacao {
@@ -104,6 +106,7 @@ const mapProdutoBackendToFrontend = (produto: BackendProduto): Produto => ({
   precoVenda: Number(produto.precoDeVenda),
   unidadePack: produto.unidadesPorPack,
   dataCriacao: formatarDataBR(produto.dataCadastro),
+  validade: produto.validade ? produto.validade.split('T')[0] : '',
 })
 
 const mapMovimentacaoBackendToFrontend = (mov: BackendMovimentacao): Movimentacao => {
@@ -207,6 +210,7 @@ export const ProvedorEstoque: React.FC<ProvedorProps> = ({ children }) => {
         custoDeCompra: produtoNovo.precoCusto,
         precoDeVenda: produtoNovo.precoVenda,
         categoria: produtoNovo.categoria,
+        validade: produtoNovo.validade,
       }),
     })
 
@@ -254,6 +258,7 @@ export const ProvedorEstoque: React.FC<ProvedorProps> = ({ children }) => {
       custoDeCompra: produtoAtualizado.precoCusto,
       precoDeVenda: produtoAtualizado.precoVenda,
       categoria: produtoAtualizado.categoria,
+      validade: produtoAtualizado.validade,
     }
 
     const response = await fetch(construirUrl(`/produtos/${id}`), {

@@ -19,7 +19,7 @@ app.get('/api/produtos', async (_req: Request, res: Response) => {
 })
 
 app.post('/api/produtos', async (req: Request, res: Response) => {
-  const { nome, unidadesPorPack, qtdAtual, qtdMinima, qtdMaxima, custoDeCompra, precoDeVenda, categoria } = req.body
+  const { nome, unidadesPorPack, qtdAtual, qtdMinima, qtdMaxima, custoDeCompra, precoDeVenda, categoria, validade } = req.body
 
   const categoriaExistente = await prisma.categoria.findFirst({ where: { nome: categoria } })
   const categoriaId = categoriaExistente
@@ -36,6 +36,7 @@ app.post('/api/produtos', async (req: Request, res: Response) => {
       custoDeCompra,
       precoDeVenda,
       categoriaId,
+      validade: validade ? new Date(validade) : null,
     },
   })
   res.status(201).json(produto)
@@ -52,6 +53,7 @@ app.put('/api/produtos/:id', async (req: Request, res: Response) => {
     custoDeCompra,
     precoDeVenda,
     categoria,
+    validade,
   } = req.body
 
   let categoriaId
@@ -73,6 +75,7 @@ app.put('/api/produtos/:id', async (req: Request, res: Response) => {
       ...(custoDeCompra !== undefined && { custoDeCompra }),
       ...(precoDeVenda !== undefined && { precoDeVenda }),
       ...(categoriaId !== undefined && { categoriaId }),
+      ...(validade !== undefined && { validade: validade ? new Date(validade) : null }),
     },
   })
 

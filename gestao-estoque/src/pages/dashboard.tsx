@@ -17,6 +17,17 @@ import {
    de mercadorias e feed das últimas movimentações.
    ============================================================ */
 
+const obterDiasRestantesValidade = (validade?: string | null) => {
+  if (!validade) return null;
+
+  const hoje = new Date();
+  hoje.setHours(0, 0, 0, 0);
+
+  const dataValidade = new Date(validade + 'T00:00:00');
+  const diffTime = dataValidade.getTime() - hoje.getTime();
+  return Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+};
+
 export const Dashboard: React.FC = () => {
   const { produtos, movimentacoes } = useEstoque();
   const navegar = useNavigate();
@@ -42,6 +53,23 @@ export const Dashboard: React.FC = () => {
   const faturamentoDiario = movimentacoes
     .filter((mov) => mov.tipo === 'saida' && mov.data === hoje)
     .reduce((acumulado, mov) => acumulado + mov.valorTotal, 0);
+
+  // Produtos que vencem em 10 dias ou menos
+  const hojeDate = new Date();
+  hojeDate.setHours(0, 0, 0, 0);
+
+  const produtosPertoVencimento = produtos.filter((item) => {
+    const diffDays = obterDiasRestantesValidade(item.validade);
+    return diffDays !== null && diffDays <= 10;
+  });
+
+  produtosPertoVencimento.sort((a, b) => {
+    const dataA = new Date(a.validade! + 'T00:00:00').getTime();
+    const dataB = new Date(b.validade! + 'T00:00:00').getTime();
+    return dataA - dataB;
+  });
+
+  const numProdutosPertoVencimento = produtosPertoVencimento.length;
 
   // Formata número para moeda BRL (R$ 1.234,56)
   const formatarMoeda = (valor: number) =>
@@ -95,14 +123,29 @@ export const Dashboard: React.FC = () => {
           </p>
         </div>
 
-        {/* Botão de ação rápida — leva para a tela de movimentações */}
-        <button
-          onClick={() => navegar('/app/movimentacoes')}
-          className="flex items-center gap-2 bg-[#3525cd] hover:bg-[#4d44e3] text-white font-semibold px-3 sm:px-5 md:px-6 py-2 sm:py-2.5 md:py-3 rounded-full text-xs sm:text-sm shadow-md hover:shadow-lg transition-all active:scale-95 whitespace-nowrap"
-        >
-          <span className="material-symbols-outlined text-base sm:text-lg">add</span>
-          <span>Registrar Movimento</span>
-        </button>
+        <div className="flex items-center gap-2 sm:gap-3">
+          <button
+            type="button"
+            aria-label="Ver produtos vencidos ou próximos do vencimento"
+            onClick={() => document.getElementById('alerta-vencimento')?.scrollIntoView({ behavior: 'smooth', block: 'start' })}
+            className="relative flex h-11 w-11 sm:h-12 sm:w-12 items-center justify-center rounded-full border-2 border-[#d93025] bg-white text-[#d93025] shadow-sm transition-all hover:bg-[#fff1f1] active:scale-95"
+          >
+            <span className="material-symbols-outlined text-[1.5rem] sm:text-[1.7rem]">notifications_active</span>
+            {numProdutosPertoVencimento > 0 && (
+              <span className="absolute -right-1 -top-1 flex h-5 min-w-5 items-center justify-center rounded-full bg-[#d93025] px-1 text-[10px] font-bold text-white">
+                {numProdutosPertoVencimento > 9 ? '9+' : numProdutosPertoVencimento}
+              </span>
+            )}
+          </button>
+
+          <button
+            onClick={() => navegar('/app/movimentacoes')}
+            className="flex items-center gap-2 bg-[#3525cd] hover:bg-[#4d44e3] text-white font-semibold px-3 sm:px-5 md:px-6 py-2 sm:py-2.5 md:py-3 rounded-full text-xs sm:text-sm shadow-md hover:shadow-lg transition-all active:scale-95 whitespace-nowrap"
+          >
+            <span className="material-symbols-outlined text-base sm:text-lg">add</span>
+            <span>Registrar Movimento</span>
+          </button>
+        </div>
       </div>
 
       {/* ── GRID DE MÉTRICAS RÁPIDAS (4 CARDS) ──
@@ -166,6 +209,29 @@ export const Dashboard: React.FC = () => {
                 {produtosCriticos > 0
                   ? 'Produtos Críticos'
                   : 'Níveis de estoque estáveis'}
+              </span>
+            </IndicadorTendencia>
+          </div>
+        </CardMetrica>
+
+        {/* Card 5: Produtos perto do vencimento (<= 10 dias) */}
+        <CardMetrica
+          className="col-span-12 sm:col-span-6 lg:col-span-3"
+          $tipoBorda={numProdutosPertoVencimento > 0 ? 'erro' : 'padrao'}
+        >
+          <div>
+            <RotuloCard>Próximos do Venc.</RotuloCard>
+            <ValorCard $corValor={numProdutosPertoVencimento > 0 ? 'erro' : 'padrao'}>
+              {formatarNumeroAbreviado(numProdutosPertoVencimento)}
+            </ValorCard>
+            <IndicadorTendencia $tipoTendencia={numProdutosPertoVencimento > 0 ? 'baixa' : 'neutro'}>
+              <span className="material-symbols-outlined text-lg mr-1">
+                {numProdutosPertoVencimento > 0 ? 'event_busy' : 'event_available'}
+              </span>
+              <span>
+                {numProdutosPertoVencimento > 0
+                  ? 'Vencem em <= 10 dias'
+                  : 'Nenhum produto próximo'}
               </span>
             </IndicadorTendencia>
           </div>
@@ -290,6 +356,53 @@ export const Dashboard: React.FC = () => {
           </button>
         </div>
       </div>
+
+      {/* ── SEÇÃO DE ALERTAS DE VENCIMENTO ── */}
+      {produtosPertoVencimento.length > 0 && (
+        <div id="alerta-vencimento" className="bg-white border border-[#c7c4d8]/40 rounded-2xl p-4 md:p-6 shadow-sm mt-4 md:mt-6">
+          <div className="flex justify-between items-center mb-4 md:mb-6">
+            <h3 className="text-base md:text-lg font-bold text-on-surface">Produtos Próximos do Vencimento</h3>
+            <span className="text-xs font-semibold px-2.5 py-1 bg-[#ba1a1a]/10 rounded-lg text-[#ba1a1a]">
+              Atenção: 10 dias ou menos
+            </span>
+          </div>
+          <div className="space-y-2 md:space-y-4">
+            {produtosPertoVencimento.map((produto) => {
+              const dataVal = new Date(produto.validade! + 'T00:00:00');
+              const diffTime = dataVal.getTime() - hojeDate.getTime();
+              const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+              const statusVencimento = diffDays < 0 ? 'Vencido' : diffDays === 0 ? 'Vence hoje' : `Faltam ${diffDays} dias`;
+              const statusCor = diffDays < 0 ? 'text-[#ba1a1a]' : diffDays <= 5 ? 'text-[#ba1a1a]' : 'text-[#a46300]';
+
+              return (
+                <div key={produto.id} className="flex items-center justify-between p-2.5 md:p-3.5 hover:bg-[#f5f2ff] rounded-xl transition-colors border border-[#c7c4d8]/20">
+                  <div className="flex items-center gap-2 md:gap-3 min-w-0">
+                    <span className="material-symbols-outlined p-1.5 md:p-2 rounded-xl text-base md:text-lg shrink-0 bg-[#ba1a1a]/10 text-[#ba1a1a]">
+                      warning
+                    </span>
+                    <div className="min-w-0">
+                      <h4 className="font-semibold text-xs md:text-sm text-on-surface line-clamp-1">
+                        {produto.nome}
+                      </h4>
+                      <p className="text-xs text-on-surface-variant truncate">
+                        Estoque: {produto.quantidade} un
+                      </p>
+                    </div>
+                  </div>
+                  <div className="text-right shrink-0 ml-2">
+                    <span className={`font-bold text-xs md:text-sm ${statusCor}`}>
+                      {statusVencimento}
+                    </span>
+                    <p className="text-[9px] md:text-[10px] text-[#464555]/60 font-mono">
+                      {dataVal.toLocaleDateString('pt-BR')}
+                    </p>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      )}
     </div>
   );
 };
